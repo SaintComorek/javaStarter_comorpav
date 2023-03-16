@@ -1,9 +1,7 @@
 package com.example.dto;
 
 
-import com.example.model.User;
 import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +9,25 @@ import java.util.List;
 public class DtoCollection {
 
     private List<UserDto> userDtoList = new ArrayList<>();
+    private List<NoteDto> noteDtoList = new ArrayList<>();
+    private List<TagDto> tagDtoList = new ArrayList<>();
+    private List<GroupDto> groupDtoList = new ArrayList<>();
 
     public void addUserDto(UserDto userDto)
     {
-
         userDtoList.add(userDto);
+    }
+    public void addNoteDto(NoteDto note)
+    {
+        noteDtoList.add(note);
+    }
+    public void addTagDto(TagDto tag)
+    {
+        tagDtoList.add(tag);
+    }
+    public void addUserDto(GroupDto groupDto)
+    {
+        groupDtoList.add(groupDto);
     }
 
 }
