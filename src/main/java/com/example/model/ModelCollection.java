@@ -14,7 +14,6 @@ public class ModelCollection {
 
     public void  addToUser(User user)
     {
-
         userList.add(user);
     }
     public void  addToNote(Note note)
@@ -29,7 +28,5 @@ public class ModelCollection {
     {
         groupList.add(group);
     }
-
-
 
 }

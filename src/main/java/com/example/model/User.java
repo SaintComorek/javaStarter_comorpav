@@ -25,6 +25,14 @@ public class User {
     @Column(name = "status")
     private String status;
 
+    @OneToOne
+    private Group group;
+    @ManyToOne
+    private Tag tag;
+
+    @OneToOne
+    private Note note;
+
     public void createUser(String name, String lastName, int age) {
         this.id = id;
         this.name = name;
@@ -40,6 +48,5 @@ public class User {
         this.age = age;
         this.status = status;
     }
-
 
 }

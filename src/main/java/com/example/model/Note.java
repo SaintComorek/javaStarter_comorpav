@@ -1,8 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +12,12 @@ public class Note {
 
     @Id
     private long id;
-    //private Tag tag;
+
+    @Column(name = "value")
     private String words;
+
+    @OneToOne
+    private  Tag tag;
+
 
 }

@@ -1,19 +1,14 @@
 package com.example.dto;
 
 
-import com.example.model.Group;
-import com.example.model.Note;
-import com.example.model.Tag;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,16 +16,25 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "lastName is mandatory")
     private String lastName;
+    @NotBlank(message = "age")
     private int age;
+    @NotBlank(message = "status")
     private String status;
-    private Group group;
-    private Note note;
-    private Tag tag;
+    @NotBlank(message = "Group")
+    private GroupDto group;
+    @NotBlank(message = "Note")
+    private NoteDto note;
+    @NotBlank(message = "Tag name ")
+    private TagDto tag;
+
+    public UserDto(String sss, String aaa, int i1, GroupDto groupDto, NoteDto noteDto, TagDto tagDto) {
+    }
 
     public void setUserDto(Long id, String name, String lastname, int age, String status) {
         this.id = id;

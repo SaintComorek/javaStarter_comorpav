@@ -21,30 +21,21 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    DtoCollection dtoCollection = new DtoCollection();
+    @Autowired
     ModelMapper modelMapper;
-    UserDto userDto;
-    User user;
-    ModelCollection modelCollection = new ModelCollection();
+
+    private DtoCollection dtoCollection = new DtoCollection();
+    private UserDto userDto;
+    private User user;
+    private ModelCollection modelCollection = new ModelCollection();
 
 
     public List<UserDto> getAllUsers() {
-        if (this.userRepo.count() > 0) {
             return this.userRepo.findAll()
                     .stream()
                     .map(this::convertEntityToDto)
                     .collect(Collectors.toList());
-        } else
-            return Collections.emptyList();
     }
-
-    public List<User> findUserById(long id) {
-        return userRepo.findAll()
-                .stream()
-                .filter(w -> w.getId() == id)
-                .collect(Collectors.toList());
-    }
-
     public List<User> putMethod(UserDto userDto ,long id) {
         Optional<User> optionalUser = userRepo.findById(id);
         if (optionalUser.isPresent()) {
@@ -69,7 +60,6 @@ public class UserService {
         dtoCollection.addUserDto(userDto);
         modelCollection.addToUser(user);
         userRepo.save(user);
-
         return modelCollection.getUserList();
     }
 
@@ -80,7 +70,6 @@ public class UserService {
         userDto = modelMapper.map(user, UserDto.class);
         return userDto;
     }
-
 
     private User convertDtoToEntity(UserDto userDto) {
         modelMapper = new ModelMapper();

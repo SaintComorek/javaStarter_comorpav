@@ -1,15 +1,12 @@
 package com.example.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
+@Configuration
 public class SqlSetup {
-        //jdbc:postgresql://localhost:5432/postgres
-        //static final private String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
         static final private String DB_URL_USERS = "jdbc:postgresql://localhost:5432/Users";
         static final private String USER = "postgres";
         static final private String PASS = "root";
@@ -37,13 +34,6 @@ public class SqlSetup {
             }
         }
 
-
-        public void addToDatabase() throws SQLException {
-            Connection connection = DriverManager.getConnection(DB_URL_USERS, USER, PASS);
-            Statement st = connection.createStatement();
-            st.execute("VALUES ('Simpson', 'Mr.', 2001)");
-        }
-
         public void createTable(String databaseName,String tableName) {
             // PreparedStatement create = Connection.prepareStatement("CREATE TABLE IF NOT EXIST Users(id int NOT NULL AUTO_INCREMENT, first varchar(255) , last varchar(255), PRIMARY KEY(id))");
             try (Connection conn = DriverManager.getConnection(DB_URL_USERS, USER, PASS);
@@ -57,6 +47,21 @@ public class SqlSetup {
                 System.out.println("Exception catch " + e.getMessage());
             }
         }
+
+        public boolean checkDatabase(String databaseName) throws SQLException {
+
+            Connection conn = DriverManager.getConnection(DB_URL_USERS, USER, PASS);
+            ResultSet resultSet = conn.getMetaData().getCatalogs();
+            while (resultSet.next()) {
+                String name = resultSet.getString(1);
+                if(name.equals(databaseName))
+                    return false;
+            }
+            resultSet.close();
+            return true;
+        }
+
+
         @NonNull
         public void insert_row(String tableName, String name, String lastName, int age, String status) {
             Statement statement;

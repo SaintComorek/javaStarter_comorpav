@@ -1,8 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,7 +10,9 @@ public class Group {
 
     @Id
     private long id;
+    @OneToOne
     private Tag tag;
+    @OneToOne
     private Note note;
 
 }
