@@ -9,6 +9,7 @@ import lombok.Data;
 public class Group {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @OneToOne
     private Tag tag;

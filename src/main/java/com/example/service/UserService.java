@@ -1,6 +1,6 @@
 package com.example.service;
 
-
+import com.example.config.ConfigFile;
 import com.example.dto.DtoCollection;
 import com.example.dto.UserDto;
 import com.example.model.ModelCollection;
@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-
 
     @Autowired
     UserRepo userRepo;
@@ -39,6 +38,7 @@ public class UserService {
     public List<User> putMethod(UserDto userDto ,long id) {
         Optional<User> optionalUser = userRepo.findById(id);
         if (optionalUser.isPresent()) {
+            deleteMethod(id);
             user = convertDtoToEntity(userDto);
             userRepo.save(user);
         }

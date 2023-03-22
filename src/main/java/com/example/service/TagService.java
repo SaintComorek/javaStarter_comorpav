@@ -1,15 +1,11 @@
 package com.example.service;
 
 import com.example.dto.TagDto;
-import com.example.dto.UserDto;
 import com.example.model.Tag;
-import com.example.model.User;
 import com.example.repository.TagRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,7 +22,7 @@ public class TagService {
     private  TagDto tagDto = new TagDto();
     public  Tag tag = new Tag();
 
-    public List<TagDto> getAllNotes() {
+    public List<TagDto> getAllTags() {
         return this.tagRepo.findAll()
                 .stream()
                 .map(this::convertEntityToDto)
@@ -35,6 +31,7 @@ public class TagService {
     public List<Tag> putMethod(TagDto tagDto , long id) {
         Optional<Tag> optionalTag = tagRepo.findById(id);
         if (optionalTag.isPresent()) {
+            deleteMethod(id);
             tag = convertDtoToEntity(tagDto);
             tagRepo.save(tag);
         }
@@ -49,11 +46,8 @@ public class TagService {
         return tagRepo.findAll();
     }
 
-    public List<Tag> addNote(TagDto tagDto) {
-
+    public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
-        //dtoCollection.addUserDto(userDto);
-        //modelCollection.addToUser(user);
         tagRepo.save(tag);
         return tagRepo.findAll();
     }
@@ -68,6 +62,8 @@ public class TagService {
         tag = modelMapper.map(tagDto, Tag.class);
         return tag;
     }
+
+
 
 
     /*

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Note {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "value")
