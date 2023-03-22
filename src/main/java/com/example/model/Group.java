@@ -16,4 +16,7 @@ public class Group {
     @OneToOne
     private Note note;
 
+    @ManyToOne
+    private BaseUserModel baseUserModel;
+
 }

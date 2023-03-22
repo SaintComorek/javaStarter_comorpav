@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.dto.BaseUserDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,8 @@ public class Tag {
 
     @Column(name = "tagName")
     private String tag;
+
+    @ManyToOne
+    private BaseUserModel baseUserModel;
 
 }

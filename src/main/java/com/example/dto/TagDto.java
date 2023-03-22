@@ -17,4 +17,8 @@ public class TagDto {
     @NotBlank(message = "Tag name ")
     private String tagName;
 
+
+    private BaseUserDto baseUserDto;
+
+
 }

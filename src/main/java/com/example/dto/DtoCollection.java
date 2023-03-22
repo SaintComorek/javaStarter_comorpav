@@ -12,6 +12,7 @@ public class DtoCollection {
     private List<NoteDto> noteDtoList = new ArrayList<>();
     private List<TagDto> tagDtoList = new ArrayList<>();
     private List<GroupDto> groupDtoList = new ArrayList<>();
+    private List<BaseUserDto> baseUserDtoList = new ArrayList<>();
 
     public void addUserDto(UserDto userDto)
     {
@@ -25,9 +26,13 @@ public class DtoCollection {
     {
         tagDtoList.add(tag);
     }
-    public void addUserDto(GroupDto groupDto)
+    public void addGroupDto(GroupDto groupDto)
     {
         groupDtoList.add(groupDto);
+    }
+    public void addBaseUserDto(BaseUserDto baseUserDto)
+    {
+        baseUserDtoList.add(baseUserDto);
     }
 
 }

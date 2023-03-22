@@ -1,7 +1,9 @@
 package com.example.service;
 
 import com.example.dto.TagDto;
+import com.example.dto.UserDto;
 import com.example.model.Tag;
+import com.example.model.User;
 import com.example.repository.TagRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,31 @@ public class TagService {
     ModelMapper modelMapper;
 
     private  TagDto tagDto = new TagDto();
-    public  Tag tag = new Tag();
+    private  Tag tag = new Tag();
+    private User user = new User();
+
+
+    public List<Tag> findTagById(String tagName)
+    {
+        return tagRepo.findAll()
+                .stream()
+                .filter(w -> tag.getTag() == tagName)
+                .collect(Collectors.toList());
+
+    }
+    /*
+    public List<Tag> findTagByUser(UserDto userDto)
+    {
+        user =
+        return tagRepo.findAll()
+                .stream()
+                .filter(w -> tag.getTag() == tagName)
+                .collect(Collectors.toList());
+
+    }
+
+     */
+
 
     public List<TagDto> getAllTags() {
         return this.tagRepo.findAll()
@@ -37,6 +63,8 @@ public class TagService {
         }
         return tagRepo.findAll();
     }
+
+
     public List<Tag> deleteMethod(long id) {
         Optional<Tag> optionalTag = tagRepo.findById(id);
         if (optionalTag.isPresent()) {

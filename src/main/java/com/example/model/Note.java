@@ -15,10 +15,13 @@ public class Note {
     private long id;
 
     @Column(name = "value")
-    private String words;
+    private StringBuilder words;
 
     @OneToOne
     private  Tag tag;
+
+    @ManyToOne
+    private BaseUserModel baseUserModel;;
 
 
 }

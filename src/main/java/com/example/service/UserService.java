@@ -28,7 +28,6 @@ public class UserService {
     private User user;
     private ModelCollection modelCollection = new ModelCollection();
 
-
     public List<UserDto> getAllUsers() {
             return this.userRepo.findAll()
                     .stream()
@@ -64,14 +63,14 @@ public class UserService {
     }
 
 
-    private UserDto convertEntityToDto(User user) {
+    public UserDto convertEntityToDto(User user) {
         modelMapper = new ModelMapper();
         userDto = new UserDto();
         userDto = modelMapper.map(user, UserDto.class);
         return userDto;
     }
 
-    private User convertDtoToEntity(UserDto userDto) {
+    public User convertDtoToEntity(UserDto userDto) {
         modelMapper = new ModelMapper();
         user = new User();
         user = modelMapper.map(userDto, User.class);

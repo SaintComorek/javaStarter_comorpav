@@ -23,4 +23,6 @@ public class GroupDto {
     @NotBlank(message = "tag recomended")
     private TagDto tag;
 
+    private  BaseUserDto baseUserDto;
+
 }

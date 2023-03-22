@@ -1,10 +1,13 @@
 package com.example.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.metrics.StartupStep;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,13 +28,24 @@ public class User {
     @Column(name = "status")
     private String status;
 
+    /*
     @OneToOne
     private Group group;
+
+
     @ManyToOne
     private Tag tag;
 
     @OneToOne
     private Note note;
+      */
+    @OneToMany
+    List<Note> note = new ArrayList<>();
+    @OneToMany
+    List<Tag> tag = new ArrayList<>();
+    @OneToMany
+    List<Group> group = new ArrayList<>();
+
 
     public void createUser(String name, String lastName, int age) {
         this.id = id;

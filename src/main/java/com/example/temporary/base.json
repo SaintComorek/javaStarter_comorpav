@@ -1,0 +1,49 @@
+{
+  "id": 0,
+  "name": "Rocky",
+  "lastName": "marciano",
+  "age": 22,
+  "status": "Admin",
+  "groupDtoList": [
+    {
+      "id": 1,
+      "note": {
+        "id": 1,
+        "tag": {
+          "id": 1,
+          "tagName": "default"
+        },
+        "words": "asdasdadadadsadasfsdfdgr5errgdfbvdberbebe"
+      },
+      "tag": {
+        "id": 1,
+        "tagName": "default"
+      }
+    }
+  ],
+  "tagDtoList": [
+    {
+      "id": 1,
+      "tagName": "default"
+    }
+  ],
+  "noteDtoList": [
+    {
+      "id": 1,
+      "tag": {
+        "id": 1,
+        "tagName": "default"
+      },
+      "words": "asdasdadadadsadasfsdfdgr5errgdfbvdberbebe"
+    },
+    {
+      "id": 2,
+      "tag": {
+        "id": 1,
+        "tagName": "default"
+      },
+      "words": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec vitae arcu. Sed convallis magna eu sem. Maecenas libero. Etiam dictum tincidunt diam. Curabitur sagittis hendrerit ante. Et harum quidem rerum facilis est et expedita distinctio. Pellentesque ipsum. Fusce suscipit libero eget elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. In rutrum. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, se"
+    }
+  ]
+}
+
