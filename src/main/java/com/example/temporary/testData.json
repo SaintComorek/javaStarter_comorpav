@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "pavel",
+    "lastName": "eeeeo",
+    "age": 22,
+    "status": "Admin",
+    "noteList": [],
+    "tagList": [],
+    "groupList": []
+  },
+  {
+    "id": 2,
+    "name": "procky",
+    "lastName": "server",
+    "age": 22,
+    "status": "Admin",
+    "noteList": [],
+    "tagList": [],
+    "groupList": []
+  },
+  {
+    "id": 3,
+    "name": "proxky",
+    "lastName": "server",
+    "age": 22,
+    "status": "Admin",
+    "noteList": [],
+    "tagList": [],
+    "groupList": []
+  }
+]
