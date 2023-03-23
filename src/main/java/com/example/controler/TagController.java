@@ -23,16 +23,25 @@ public class TagController {
     public List<Tag> getAllTags() {
         return tagRepo.findAll();
     }
-/*
-    @GetMapping("/{lastName}")
-    public List<Tag> gatTagByLastName(@PathVariable String lastName) {
 
-        return tagRepo.findByLastname(lastName);
+    @GetMapping("/{name}")
+    public List<Tag> getTag(@PathVariable String name) {
+
+        return  tagService.findTag(name);
+
     }
 
- */
+    @GetMapping("/find/{name}")
+    public List<Tag> gatTagByUserName(@PathVariable String name) {
 
-    @PostMapping()
+        return tagService.findTagUser(name);
+    }
+
+
+
+
+
+        @PostMapping()
     public List<Tag> postTag(@RequestBody TagDto tagDto) {
         tagService.addTag(tagDto);
         return tagRepo.findAll();

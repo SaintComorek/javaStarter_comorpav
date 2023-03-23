@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.core.metrics.StartupStep;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,18 +25,9 @@ public class User {
     private int age;
     @Column(name = "status")
     private String status;
+    @Column(name = "email")
+    private String emailAddress;
 
-    /*
-    @OneToOne
-    private Group group;
-
-
-    @ManyToOne
-    private Tag tag;
-
-    @OneToOne
-    private Note note;
-      */
     @OneToMany
     List<Note> noteList = new ArrayList<>();
     @OneToMany

@@ -10,6 +10,8 @@ import com.example.repository.TagRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,31 +39,29 @@ public class TagService {
                 .collect(Collectors.toList());
 
     }
-
-    /*
-    public List<Tag> findTagByUser(BaseUserDto baseUserDto)
+    public List<Tag> findTag(String name)
     {
+        //List<Tag> tmp = new ArrayList<>();
+        return tagRepo.findTagByTagName(name);
 
-        return tagRepo.findAll()
-                .stream()
-                .filter(w -> tag.getBaseUserModel().getName().equals(baseUserDto.getName()))
-                .collect(Collectors.toList());
 
+    }
+    public List<Tag> findTagUser(String userName)
+    {
+        return tagRepo.findTagByBaseUserModel_Name(userName);
+    }
+    public List<Tag> findTagByLastName(String lastName)
+    {
+        return tagRepo.findTagByBaseUserModel_Name(lastName);
+    }
+    public List<Tag> findTagUsers (String name)
+    {
+        return tagRepo.findTagByBaseUserModel_Name(name);
     }
 
 
-    public List<Tag> findTagByUserName(BaseUserDto baseUserDto)
-    {
 
-        return tagRepo.findAll()
-                .stream()
-                .filter(w -> tag.getBaseUserModel().equals(baseUserDto))
-                //.filter(s -> tag.getTag() == "")
-                .collect(Collectors.toList());
 
-    }
-
-     */
 
 
 
@@ -94,8 +94,11 @@ public class TagService {
 
 
  */
+
+
     public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
+        tag.setBaseUserModel(convertDtoToEntity(tagDto.getBaseUserDto()));
         tagRepo.save(tag);
         return tagRepo.findAll();
     }

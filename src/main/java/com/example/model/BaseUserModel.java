@@ -18,13 +18,7 @@ public class BaseUserModel {
     private String name;
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
-    /*
-    @NotBlank(message = "age")
-    private int age;
-    @NotBlank(message = "status")
-    private String status;
-
-     */
-
+    @NotBlank(message = "email address is mandatory")
+    private String emailAddress;
 
 }
