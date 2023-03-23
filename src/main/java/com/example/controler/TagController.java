@@ -1,5 +1,6 @@
 package com.example.controler;
 
+import com.example.dto.BaseUserDto;
 import com.example.dto.TagDto;
 import com.example.model.Tag;
 import com.example.repository.TagRepo;
@@ -28,11 +29,13 @@ public class TagController {
         tagService.addTag(tagDto);
         return tagRepo.findAll();
     }
-
+/*
     @GetMapping("/{id}")
     public Optional<Tag> getTag(@PathVariable long id) {
         return tagRepo.findById(id);
     }
+
+
 
     @PutMapping("{id}")
     public List<Tag> putTags(@RequestBody TagDto tagDto, @PathVariable Long id) {
@@ -43,4 +46,14 @@ public class TagController {
     public List<Tag> deleteTag(@PathVariable Long id) {
         return tagService.deleteMethod(id);
     }
+
+     */
+
+    @GetMapping("/user")
+    public List<Tag> getTagsOfUser(@RequestBody BaseUserDto baseUserDto) {
+        return tagService.findTagByUser(baseUserDto);
+    }
+
+
+
 }

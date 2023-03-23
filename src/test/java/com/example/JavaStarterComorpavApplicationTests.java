@@ -37,17 +37,17 @@ class JavaStarterComorpavApplicationTests {
         userDto.setNoteDtoToList(noteDto2);
         userDto.setGroupDtoToList(groupDto);
         userDto.setTagDtoToList(tagDto);
-        ;
+
 
         Gson gson = new Gson();
         String value = gson.toJson(userDto);
         String value2 = gson.toJson(userService.convertDtoToEntity(userDto));
         System.out.println("Dto Values: " + value);
         System.out.println("Model Values: " + value2);
-        System.out.println("Base Data:  " + baseUserDto.toString());
-        System.out.println("Tag Data:  " + tagDto.toString());
-        System.out.println("Group Data:  " + groupDto.toString());
-        System.out.println("Note Data:  " + noteDto.toString());
+        System.out.println("Base Data:  " + gson.toJson(baseUserDto));
+        System.out.println("Tag Data:  " + gson.toJson(tagDto));
+        System.out.println("Group Data:  " + gson.toJson(groupDto));
+        System.out.println("Note Data:  " + gson.toJson(noteDto));
     }
 
 }

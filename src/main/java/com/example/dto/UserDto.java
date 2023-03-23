@@ -2,18 +2,12 @@ package com.example.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -43,11 +37,11 @@ public class UserDto {
      */
 
     @NotBlank(message = "Group")
-    private List<GroupDto> groupDtoList = new ArrayList<>();
+    private List<GroupDto> groupList = new ArrayList<>();
     @NotBlank(message = "Tag name ")
-    private List<TagDto> tagDtoList = new ArrayList<>();
+    private List<TagDto> tagList = new ArrayList<>();
     @NotBlank(message = "Note")
-    private List<NoteDto> noteDtoList = new ArrayList<>();
+    private List<NoteDto> noteList = new ArrayList<>();
 
 
 
@@ -73,15 +67,15 @@ public class UserDto {
     }
 
     public void setTagDtoToList(TagDto tagDto) {
-        tagDtoList.add(tagDto);
+        tagList.add(tagDto);
     }
 
     public void setNoteDtoToList(NoteDto noteDto) {
-        noteDtoList.add(noteDto);
+        noteList.add(noteDto);
     }
 
     public void setGroupDtoToList(GroupDto groupDto) {
-        groupDtoList.add(groupDto);
+        groupList.add(groupDto);
     }
 
 

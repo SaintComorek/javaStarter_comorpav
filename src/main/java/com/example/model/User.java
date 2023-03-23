@@ -40,11 +40,11 @@ public class User {
     private Note note;
       */
     @OneToMany
-    List<Note> note = new ArrayList<>();
+    List<Note> noteList = new ArrayList<>();
     @OneToMany
-    List<Tag> tag = new ArrayList<>();
+    List<Tag> tagList = new ArrayList<>();
     @OneToMany
-    List<Group> group = new ArrayList<>();
+    List<Group> groupList = new ArrayList<>();
 
 
     public void createUser(String name, String lastName, int age) {

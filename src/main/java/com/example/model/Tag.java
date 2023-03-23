@@ -16,9 +16,10 @@ public class Tag {
     private long id;
 
     @Column(name = "tagName")
-    private String tag;
+    private String tagName;
 
     @ManyToOne
+    @JoinColumn(name = "userid")
     private BaseUserModel baseUserModel;
 
 }

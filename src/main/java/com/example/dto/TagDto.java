@@ -1,5 +1,6 @@
 package com.example.dto;
 
+import com.example.model.BaseUserModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,10 @@ public class TagDto {
     @NotBlank(message = "Tag name ")
     private String tagName;
 
+    @NotBlank(message = "User data")
 
-    private BaseUserDto baseUserDto;
+    //private BaseUserDto baseUserDto;
+    private BaseUserModel baseUserModel;
 
 
 }

@@ -17,17 +17,20 @@ public class BaseUserDto {
     private String name;
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
+    /*
     @NotBlank(message = "age")
     private int age;
     @NotBlank(message = "status")
     private String status;
 
+     */
+
     public void setUpBaseData(UserDto userDto) {
         this.id = (userDto.getId());
         this.name = (userDto.getName());
         this.lastName = (userDto.getLastName());
-        this.age = userDto.getAge();
-        this.status = userDto.getStatus();
+       // this.age = userDto.getAge();
+      //  this.status = userDto.getStatus();
     }
 
 }

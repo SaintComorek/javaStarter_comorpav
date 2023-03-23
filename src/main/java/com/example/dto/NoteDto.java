@@ -23,8 +23,9 @@ public class NoteDto {
     private TagDto tag;
 
     @NotBlank(message = "value")
-    private String words;
+    private String value;
 
+    @NotBlank(message = "User data")
     private  BaseUserDto baseUserDto;
 
 }

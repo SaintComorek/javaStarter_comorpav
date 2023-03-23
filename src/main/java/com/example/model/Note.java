@@ -15,7 +15,7 @@ public class Note {
     private long id;
 
     @Column(name = "value")
-    private StringBuilder words;
+    private StringBuilder value;
 
     @OneToOne
     private  Tag tag;

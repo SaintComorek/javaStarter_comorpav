@@ -1,7 +1,9 @@
 package com.example.service;
 
+import com.example.dto.BaseUserDto;
 import com.example.dto.TagDto;
 import com.example.dto.UserDto;
+import com.example.model.BaseUserModel;
 import com.example.model.Tag;
 import com.example.model.User;
 import com.example.repository.TagRepo;
@@ -24,30 +26,43 @@ public class TagService {
     private  TagDto tagDto = new TagDto();
     private  Tag tag = new Tag();
     private User user = new User();
+    private BaseUserModel baseUserModel;
 
 
     public List<Tag> findTagById(String tagName)
     {
         return tagRepo.findAll()
                 .stream()
-                .filter(w -> tag.getTag() == tagName)
+                .filter(w -> tag.getTagName() == tagName)
                 .collect(Collectors.toList());
 
     }
-    /*
-    public List<Tag> findTagByUser(UserDto userDto)
+
+    public List<Tag> findTagByUser(BaseUserDto baseUserDto)
     {
-        user =
+
         return tagRepo.findAll()
                 .stream()
-                .filter(w -> tag.getTag() == tagName)
+                .filter(w -> tag.getBaseUserModel().getName().equals(baseUserDto.getName()))
                 .collect(Collectors.toList());
 
     }
 
-     */
+
+    public List<Tag> findTagByUserName(BaseUserDto baseUserDto)
+    {
+
+        return tagRepo.findAll()
+                .stream()
+                .filter(w -> tag.getBaseUserModel().equals(baseUserDto))
+                //.filter(s -> tag.getTag() == "")
+                .collect(Collectors.toList());
+
+    }
 
 
+
+/*
     public List<TagDto> getAllTags() {
         return this.tagRepo.findAll()
                 .stream()
@@ -74,6 +89,8 @@ public class TagService {
         return tagRepo.findAll();
     }
 
+
+ */
     public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
         tagRepo.save(tag);
@@ -89,6 +106,10 @@ public class TagService {
     private Tag convertDtoToEntity(TagDto tagDto) {
         tag = modelMapper.map(tagDto, Tag.class);
         return tag;
+    }
+    private BaseUserModel convertDtoToEntity(BaseUserDto baseUserDto) {
+        baseUserModel = modelMapper.map(baseUserDto, BaseUserModel.class);
+        return baseUserModel;
     }
 
 
