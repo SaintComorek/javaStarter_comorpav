@@ -4,6 +4,7 @@ import com.example.dto.GroupDto;
 import com.example.dto.NoteDto;
 import com.example.model.Group;
 import com.example.model.Note;
+import com.example.model.Tag;
 import com.example.repository.GroupRepo;
 import com.example.repository.NoteRepo;
 import com.example.service.GroupService;
@@ -32,6 +33,28 @@ public class GroupController {
     public List<Group> postGroup(@RequestBody GroupDto groupDto) {
         groupService.addNote(groupDto);
         return groupRepo.findAll();
+    }
+
+    @GetMapping("/find/{name}")
+    public List<Group> getGroupByUserName(@PathVariable String name) {
+
+        return groupService.findGroupByUserName(name);
+    }
+
+    @GetMapping("/find/{lastName}")
+    public List<Group> getGroupByUserLastName(@PathVariable String lastName) {
+
+        return groupService.findGroupByLastName(lastName);
+    }
+    @GetMapping("/find/{tagName}")
+    public List<Group> getGroupByTagName(@PathVariable String tagName) {
+
+        return groupService.findGroup(tagName);
+    }
+    @GetMapping("/find/{emailAddress}")
+    public List<Group> gatGroupByUserEmailAddress(@PathVariable String emailAddress) {
+
+        return groupService.findGroupByEmailAddress(emailAddress);
     }
 
     @GetMapping("/{id}")

@@ -29,6 +29,7 @@ public class UserDto {
     @NotBlank(message = "email address is mandatory")
     private String emailAddress;
 
+
     /*
     @NotBlank(message = "Group")
     private GroupDto group;

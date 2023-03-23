@@ -2,6 +2,7 @@ package com.example.controler;
 
 import com.example.dto.NoteDto;
 import com.example.dto.TagDto;
+import com.example.model.Group;
 import com.example.model.Note;
 import com.example.model.Tag;
 import com.example.repository.NoteRepo;
@@ -34,6 +35,28 @@ public class NoteController {
     public List<Note> postTag(@RequestBody NoteDto noteDto) {
         noteService.addNote(noteDto);
         return noteRepo.findAll();
+    }
+
+    @GetMapping("/find/{name}")
+    public List<Note> gatNoteByUserName(@PathVariable String name) {
+
+        return noteService.findNoteByUserName(name);
+    }
+
+    @GetMapping("/find/{lastName}")
+    public List<Note> gatNoteByUserLastName(@PathVariable String lastName) {
+
+        return noteService.findNoteByLastName(lastName);
+    }
+    @GetMapping("/find/{tagName}")
+    public List<Note> getNoteByTagName(@PathVariable String tagName) {
+
+        return noteService.findNote(tagName);
+    }
+    @GetMapping("/find/{emailAddress}")
+    public List<Note> gatNoteByUserEmailAddress(@PathVariable String emailAddress) {
+
+        return noteService.findNoteByEmailAddress(emailAddress);
     }
 
     @GetMapping("/{id}")

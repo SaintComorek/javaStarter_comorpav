@@ -15,7 +15,6 @@ public class Group {
     private Tag tag;
     @OneToOne
     private Note note;
-
     @ManyToOne
     private BaseUserModel baseUserModel;
 

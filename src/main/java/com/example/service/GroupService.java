@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.GroupDto;
 import com.example.model.Group;
+import com.example.model.Tag;
 import com.example.repository.GroupRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,21 @@ public class GroupService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-
-    public List<Group> putMethod(GroupDto groupDto, long id) {
+    public List<Group> findGroup(String name)
+    {
+        return groupRepo.findByTag_TagName(name);
+    }
+    public List<Group> findGroupByUserName(String name)
+    {
+        return groupRepo.findGroupByBaseUserModel_Name(name);
+    }
+    public List<Group> findGroupByLastName(String lastName) {
+        return groupRepo.findGroupByBaseUserModel_LastName(lastName);
+    }
+    public List<Group> findGroupByEmailAddress(String emailAddress) {
+        return groupRepo.findGroupByBaseUserModel_EmailAddress(emailAddress);
+    }
+        public List<Group> putMethod(GroupDto groupDto, long id) {
         Optional<Group> optionalNote = groupRepo.findById(id);
         if (optionalNote.isPresent()) {
             deleteMethod(id);

@@ -31,46 +31,30 @@ public class TagService {
     private BaseUserModel baseUserModel;
 
 
-    public List<Tag> findTagById(String tagName)
-    {
-        return tagRepo.findAll()
-                .stream()
-                .filter(w -> tag.getTagName() == tagName)
-                .collect(Collectors.toList());
 
-    }
     public List<Tag> findTag(String name)
     {
-        //List<Tag> tmp = new ArrayList<>();
-        return tagRepo.findTagByTagName(name);
-
+         return tagRepo.findTagByTagName(name);
 
     }
-    public List<Tag> findTagUser(String userName)
+    public List<Tag> findTagByTagName(String tagName)
     {
-        return tagRepo.findTagByBaseUserModel_Name(userName);
+        return tagRepo.findTagByTagName(tagName);
     }
     public List<Tag> findTagByLastName(String lastName)
     {
-        return tagRepo.findTagByBaseUserModel_Name(lastName);
+        return tagRepo.findTagByBaseUserModel_LastName(lastName);
     }
-    public List<Tag> findTagUsers (String name)
+    public List<Tag> findTagByUserName(String name)
     {
         return tagRepo.findTagByBaseUserModel_Name(name);
     }
+    public List<Tag> findTagByUserEmailAddress(String emailAdress) {
+        return tagRepo.findTagByBaseUserModel_Name(emailAdress);
+    }
 
-
-
-
-
-
-
-/*
-    public List<TagDto> getAllTags() {
-        return this.tagRepo.findAll()
-                .stream()
-                .map(this::convertEntityToDto)
-                .collect(Collectors.toList());
+        public List<Tag> getAllTags() {
+        return tagRepo.findAll();
     }
     public List<Tag> putMethod(TagDto tagDto , long id) {
         Optional<Tag> optionalTag = tagRepo.findById(id);
@@ -82,7 +66,6 @@ public class TagService {
         return tagRepo.findAll();
     }
 
-
     public List<Tag> deleteMethod(long id) {
         Optional<Tag> optionalTag = tagRepo.findById(id);
         if (optionalTag.isPresent()) {
@@ -91,19 +74,12 @@ public class TagService {
         }
         return tagRepo.findAll();
     }
-
-
- */
-
-
     public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
         tag.setBaseUserModel(convertDtoToEntity(tagDto.getBaseUserDto()));
         tagRepo.save(tag);
         return tagRepo.findAll();
     }
-
-
 
     private TagDto convertEntityToDto(Tag tag) {
         tagDto = modelMapper.map(tag, TagDto.class);
@@ -118,30 +94,4 @@ public class TagService {
         baseUserModel = modelMapper.map(baseUserDto, BaseUserModel.class);
         return baseUserModel;
     }
-
-
-
-
-    /*
-    public List<UserDto> getListOfUsersDto() {
-        if (!dtoCollection.getUserDtoList().isEmpty()) {
-            return dtoCollection.getUserDtoList();
-        }
-        return Collections.emptyList();
-    }
-
-    public List<User> getListOfUsers() {
-        if (!modelCollection.getUserList().isEmpty()) {
-            return modelCollection.getUserList();
-        }
-        return Collections.emptyList();
-    }
-
-
-     */
-
-
-
-
-
 }

@@ -19,6 +19,7 @@ public class BaseUserDto {
     private String lastName;
     @NotBlank(message = "email address is mandatory")
     private String emailAddress;
+
     /*
     @NotBlank(message = "age")
     private int age;

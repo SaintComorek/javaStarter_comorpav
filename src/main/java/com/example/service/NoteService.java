@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.dto.NoteDto;
+import com.example.model.Group;
 import com.example.model.Note;
 import com.example.repository.NoteRepo;
 import org.modelmapper.ModelMapper;
@@ -27,7 +28,20 @@ public class NoteService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-
+    public List<Note> findNote(String name)
+    {
+        return noteRepo.findByTag_TagName(name);
+    }
+    public List<Note> findNoteByUserName(String name)
+    {
+        return noteRepo.findByBaseUserModel_Name(name);
+    }
+    public List<Note> findNoteByLastName(String lastName) {
+        return noteRepo.findByBaseUserModel_LastName(lastName);
+    }
+    public List<Note> findNoteByEmailAddress(String emailAddress) {
+        return noteRepo.findByBaseUserModel_EmailAddress(emailAddress);
+    }
     public List<Note> putMethod(NoteDto noteDto, long id) {
         Optional<Note> optionalNote = noteRepo.findById(id);
         if (optionalNote.isPresent()) {
