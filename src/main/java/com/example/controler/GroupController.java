@@ -1,16 +1,10 @@
 package com.example.controler;
 
 import com.example.dto.GroupDto;
-import com.example.dto.NoteDto;
 import com.example.model.Group;
-import com.example.model.Note;
-import com.example.model.Tag;
 import com.example.repository.GroupRepo;
-import com.example.repository.NoteRepo;
 import com.example.service.GroupService;
-import com.example.service.NoteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

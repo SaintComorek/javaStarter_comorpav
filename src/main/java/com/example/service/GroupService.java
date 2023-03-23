@@ -2,7 +2,6 @@ package com.example.service;
 
 import com.example.dto.GroupDto;
 import com.example.model.Group;
-import com.example.model.Tag;
 import com.example.repository.GroupRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

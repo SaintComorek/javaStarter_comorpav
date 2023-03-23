@@ -15,11 +15,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
-
+public class UserService{
     @Autowired
     UserRepo userRepo;
-
     @Autowired
     ModelMapper modelMapper;
 
@@ -90,5 +88,4 @@ public class UserService {
         }
         return Collections.emptyList();
     }
-
 }

@@ -1,7 +1,6 @@
 package com.example.service;
 
 import com.example.dto.NoteDto;
-import com.example.model.Group;
 import com.example.model.Note;
 import com.example.repository.NoteRepo;
 import org.modelmapper.ModelMapper;
