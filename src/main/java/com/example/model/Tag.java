@@ -18,8 +18,8 @@ public class Tag {
     @Column(name = "tagName")
     private String tagName;
 
-    @ManyToOne
-    @JoinColumn(name = "userid")
+    @ManyToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "name", referencedColumnName = "name")
     private BaseUserModel baseUserModel;
 
 }

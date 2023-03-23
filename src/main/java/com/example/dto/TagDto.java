@@ -21,7 +21,7 @@ public class TagDto {
     @NotBlank(message = "User data")
 
     //private BaseUserDto baseUserDto;
-    private BaseUserModel baseUserModel;
+    private BaseUserDto baseUserDto;
 
 
 }

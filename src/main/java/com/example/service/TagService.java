@@ -38,6 +38,7 @@ public class TagService {
 
     }
 
+    /*
     public List<Tag> findTagByUser(BaseUserDto baseUserDto)
     {
 
@@ -59,6 +60,8 @@ public class TagService {
                 .collect(Collectors.toList());
 
     }
+
+     */
 
 
 
@@ -98,6 +101,7 @@ public class TagService {
     }
 
 
+
     private TagDto convertEntityToDto(Tag tag) {
         tagDto = modelMapper.map(tag, TagDto.class);
         return tagDto;
@@ -107,7 +111,7 @@ public class TagService {
         tag = modelMapper.map(tagDto, Tag.class);
         return tag;
     }
-    private BaseUserModel convertDtoToEntity(BaseUserDto baseUserDto) {
+    public BaseUserModel convertDtoToEntity(BaseUserDto baseUserDto) {
         baseUserModel = modelMapper.map(baseUserDto, BaseUserModel.class);
         return baseUserModel;
     }

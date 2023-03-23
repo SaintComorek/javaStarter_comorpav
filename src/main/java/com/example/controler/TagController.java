@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tag")
@@ -23,13 +23,22 @@ public class TagController {
     public List<Tag> getAllTags() {
         return tagRepo.findAll();
     }
+/*
+    @GetMapping("/{lastName}")
+    public List<Tag> gatTagByLastName(@PathVariable String lastName) {
+
+        return tagRepo.findByLastname(lastName);
+    }
+
+ */
 
     @PostMapping()
     public List<Tag> postTag(@RequestBody TagDto tagDto) {
         tagService.addTag(tagDto);
         return tagRepo.findAll();
     }
-/*
+
+    /*
     @GetMapping("/{id}")
     public Optional<Tag> getTag(@PathVariable long id) {
         return tagRepo.findById(id);
@@ -47,12 +56,14 @@ public class TagController {
         return tagService.deleteMethod(id);
     }
 
-     */
+
 
     @GetMapping("/user")
     public List<Tag> getTagsOfUser(@RequestBody BaseUserDto baseUserDto) {
         return tagService.findTagByUser(baseUserDto);
     }
+
+ */
 
 
 
