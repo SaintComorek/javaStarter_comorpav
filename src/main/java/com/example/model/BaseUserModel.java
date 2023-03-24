@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Data
 @Entity
@@ -15,10 +17,11 @@ public class BaseUserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotBlank(message = "Name is mandatory")
+    @Cascade(CascadeType.ALL)
     private String name;
     @NotBlank(message = "lastName is mandatory")
+    @Cascade(CascadeType.ALL)
     private String lastName;
-    @NotBlank(message = "email address is mandatory")
-    private String emailAddress;
+
 
 }

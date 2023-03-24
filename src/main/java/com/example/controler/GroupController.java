@@ -25,7 +25,7 @@ public class GroupController {
 
     @PostMapping()
     public List<Group> postGroup(@RequestBody GroupDto groupDto) {
-        groupService.addNote(groupDto);
+        groupService.addGroup(groupDto);
         return groupRepo.findAll();
     }
 
@@ -45,11 +45,14 @@ public class GroupController {
 
         return groupService.findGroup(tagName);
     }
+    /*
     @GetMapping("/find/{emailAddress}")
     public List<Group> gatGroupByUserEmailAddress(@PathVariable String emailAddress) {
 
         return groupService.findGroupByEmailAddress(emailAddress);
     }
+
+     */
 
     @GetMapping("/{id}")
     public Optional<Group> getGroup(@PathVariable long id) {

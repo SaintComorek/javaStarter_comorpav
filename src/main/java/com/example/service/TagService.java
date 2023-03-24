@@ -2,25 +2,28 @@ package com.example.service;
 
 import com.example.dto.BaseUserDto;
 import com.example.dto.TagDto;
-import com.example.dto.UserDto;
 import com.example.model.BaseUserModel;
 import com.example.model.Tag;
 import com.example.model.User;
+import com.example.repository.BaseModelRepo;
 import com.example.repository.TagRepo;
+import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class TagService {
 
     @Autowired
     TagRepo tagRepo;
+    @Autowired
+    UserRepo userRepo;
+    @Autowired
+    BaseModelRepo baseModelRepo;
 
     @Autowired
     ModelMapper modelMapper;
@@ -49,9 +52,12 @@ public class TagService {
     {
         return tagRepo.findTagByBaseUserModel_Name(name);
     }
+    /*
     public List<Tag> findTagByUserEmailAddress(String emailAdress) {
         return tagRepo.findTagByBaseUserModel_Name(emailAdress);
     }
+
+     */
 
         public List<Tag> getAllTags() {
         return tagRepo.findAll();
@@ -76,8 +82,12 @@ public class TagService {
     }
     public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
-        tag.setBaseUserModel(convertDtoToEntity(tagDto.getBaseUserDto()));
-        tagRepo.save(tag);
+        List<User> tmp = userRepo.findUserByName(tag.getBaseUserModel().getName());
+        user = tmp.get(0);
+        userRepo.delete(tmp.get(0));
+        tmp.remove(0);
+        user.addToTagList(tag);
+        userRepo.save(user);
         return tagRepo.findAll();
     }
 

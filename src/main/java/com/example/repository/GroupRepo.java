@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface GroupRepo extends JpaRepository<Group , Long> {
-    List<Group> findGroupByBaseUserModel_EmailAddress(String emailAddress);
+  //  List<Group> findGroupByBaseUserModel_EmailAddress(String emailAddress);
     List<Group> findGroupByBaseUserModel_Name(String name);
     List<Group> findGroupByBaseUserModel_LastName(String lastName);
     List<Group> findByTag_TagName(String tagName);

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +40,16 @@ public class User {
     private String token;
 
     @OneToMany
-    List<Note> noteList = new ArrayList<>();
+    @Cascade(CascadeType.ALL)
+    private List<Group> groupList = new ArrayList<>();
     @OneToMany
-    List<Tag> tagList = new ArrayList<>();
+    @Cascade(CascadeType.ALL)
+    private List<Note> noteList = new ArrayList<>();
     @OneToMany
-    List<Group> groupList = new ArrayList<>();
+    @Cascade(CascadeType.ALL)
+    private List<Tag> tagList = new ArrayList<>();
 
-
-    public void createUser(String name, String lastName , String emailAddress, String username , String password , int age) {
+    public void createUser(String name, String lastName, String emailAddress, String username, String password, int age) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -56,7 +61,7 @@ public class User {
         this.token = UserToken.generateNewToken();
     }
 
-    public void createUser(String name, String lastName, String emailAddress, String username , String password, int age, String status) {
+    public void createUser(String name, String lastName, String emailAddress, String username, String password, int age, String status) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -66,6 +71,16 @@ public class User {
         this.password = password;
         this.emailAddress = emailAddress;
         this.token = UserToken.generateNewToken();
+    }
+
+    public void addToTagList(Tag tag) {
+        tagList.add(tag);
+    }
+    public void addToGroupList(Group group) {
+        groupList.add(group);
+    }
+    public void addToNoteList(Note note) {
+        noteList.add(note);
     }
 
 }

@@ -53,11 +53,14 @@ public class NoteController {
 
         return noteService.findNote(tagName);
     }
+    /*
     @GetMapping("/find/{emailAddress}")
     public List<Note> gatNoteByUserEmailAddress(@PathVariable String emailAddress) {
 
         return noteService.findNoteByEmailAddress(emailAddress);
     }
+
+     */
 
     @GetMapping("/{id}")
     public Optional<Note> getNote(@PathVariable long id) {

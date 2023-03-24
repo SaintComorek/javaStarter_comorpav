@@ -2,7 +2,9 @@ package com.example.service;
 
 import com.example.dto.GroupDto;
 import com.example.model.Group;
+import com.example.model.User;
 import com.example.repository.GroupRepo;
+import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,13 @@ public class GroupService {
     @Autowired
     GroupRepo groupRepo;
     @Autowired
+    UserRepo userRepo;
+    @Autowired
     ModelMapper modelMapper;
     private GroupDto groupDto = new GroupDto();
     private Group group = new Group();
+    private User user = new User();
+
 
     public List<GroupDto> getAllGroups() {
         return this.groupRepo.findAll()
@@ -36,9 +42,14 @@ public class GroupService {
     public List<Group> findGroupByLastName(String lastName) {
         return groupRepo.findGroupByBaseUserModel_LastName(lastName);
     }
+    /*
+
+
     public List<Group> findGroupByEmailAddress(String emailAddress) {
         return groupRepo.findGroupByBaseUserModel_EmailAddress(emailAddress);
     }
+
+     */
         public List<Group> putMethod(GroupDto groupDto, long id) {
         Optional<Group> optionalNote = groupRepo.findById(id);
         if (optionalNote.isPresent()) {
@@ -58,9 +69,14 @@ public class GroupService {
         return groupRepo.findAll();
     }
 
-    public List<Group> addNote(GroupDto groupDto) {
+    public List<Group> addGroup(GroupDto groupDto) {
         group = convertDtoToEntity(groupDto);
-        groupRepo.save(group);
+        List<User> tmp = userRepo.findUserByName(group.getBaseUserModel().getName());
+        user = tmp.get(0);
+        userRepo.delete(tmp.get(0));
+        tmp.remove(0);
+        user.addToGroupList(group);
+        userRepo.save(user);
         return groupRepo.findAll();
     }
 

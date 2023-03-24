@@ -38,9 +38,12 @@ public class NoteService {
     public List<Note> findNoteByLastName(String lastName) {
         return noteRepo.findByBaseUserModel_LastName(lastName);
     }
+    /*
     public List<Note> findNoteByEmailAddress(String emailAddress) {
         return noteRepo.findByBaseUserModel_EmailAddress(emailAddress);
     }
+
+     */
     public List<Note> putMethod(NoteDto noteDto, long id) {
         Optional<Note> optionalNote = noteRepo.findById(id);
         if (optionalNote.isPresent()) {

@@ -17,8 +17,7 @@ public class BaseUserDto {
     private String name;
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
-    @NotBlank(message = "email address is mandatory")
-    private String emailAddress;
+
 
     /*
     @NotBlank(message = "age")
@@ -32,7 +31,6 @@ public class BaseUserDto {
         this.id = (userDto.getId());
         this.name = (userDto.getName());
         this.lastName = (userDto.getLastName());
-        this.emailAddress = (userDto.getEmailAddress());
        // this.age = userDto.getAge();
       //  this.status = userDto.getStatus();
     }

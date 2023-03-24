@@ -10,5 +10,5 @@ public interface TagRepo extends JpaRepository<Tag, Long> {
     List<Tag> findTagByTagName(String tagName);
     List<Tag> findTagByBaseUserModel_Name(String name);
     List<Tag> findTagByBaseUserModel_LastName(String lastName);
-    List<Tag> findTagByBaseUserModel_EmailAddress(String emailAddress);
+   // List<Tag> findTagByBaseUserModel_EmailAddress(String emailAddress);
 }

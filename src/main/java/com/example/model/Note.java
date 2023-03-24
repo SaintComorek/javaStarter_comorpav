@@ -3,6 +3,8 @@ package com.example.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Data
 @Entity
@@ -18,9 +20,11 @@ public class Note {
     private StringBuilder value;
 
     @OneToOne
+    @Cascade(CascadeType.ALL)
     private  Tag tag;
 
     @ManyToOne
+    @Cascade(CascadeType.SAVE_UPDATE)
     private BaseUserModel baseUserModel;;
 
 

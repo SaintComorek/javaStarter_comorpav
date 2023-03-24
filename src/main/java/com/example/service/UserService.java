@@ -27,10 +27,13 @@ public class UserService{
     private ModelCollection modelCollection = new ModelCollection();
 
     public List<UserDto> getAllUsers() {
-            return this.userRepo.findAll()
+
+           return this.userRepo.findAll()
                     .stream()
                     .map(this::convertEntityToDto)
                     .collect(Collectors.toList());
+
+
     }
     public List<User> putMethod(UserDto userDto ,long id) {
         Optional<User> optionalUser = userRepo.findById(id);
