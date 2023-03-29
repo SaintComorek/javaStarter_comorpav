@@ -6,6 +6,8 @@ import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "groups")
@@ -14,18 +16,24 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @JsonIgnore
+
     @OneToOne
     @Cascade(CascadeType.ALL)
     private Tag tag;
-    @JsonIgnore
-    @OneToOne
+
+    @OneToMany
     @Cascade(CascadeType.ALL)
-    private Note note;
+    private List<Note> noteList;
 
     @JsonIgnore
     @ManyToOne
     @Cascade(CascadeType.ALL)
     private BaseUserModel baseUserModel;
+
+    public void addGroup_noteList(Note note) {
+
+        noteList.add(note);
+
+    }
 
 }

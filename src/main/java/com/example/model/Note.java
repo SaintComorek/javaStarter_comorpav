@@ -24,7 +24,7 @@ public class Note {
     private  Tag tag;
 
     @ManyToOne
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.ALL)
     private BaseUserModel baseUserModel;;
 
 

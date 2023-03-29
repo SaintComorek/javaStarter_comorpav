@@ -37,18 +37,23 @@ public class NoteController {
         return noteRepo.findAll();
     }
 
-    @GetMapping("/find/{name}")
+    @PostMapping("send/{groupName}")
+    public List<Note> postTagToGroup(@RequestBody NoteDto noteDto , @PathVariable String groupName ) {
+        return  noteService.addNoteToGroup(noteDto , groupName);
+    }
+
+    @GetMapping("/find/name/{name}")
     public List<Note> gatNoteByUserName(@PathVariable String name) {
 
         return noteService.findNoteByUserName(name);
     }
 
-    @GetMapping("/find/{lastName}")
+    @GetMapping("/find/lastname/{lastName}")
     public List<Note> gatNoteByUserLastName(@PathVariable String lastName) {
 
         return noteService.findNoteByLastName(lastName);
     }
-    @GetMapping("/find/{tagName}")
+    @GetMapping("/find/tagname/{tagName}")
     public List<Note> getNoteByTagName(@PathVariable String tagName) {
 
         return noteService.findNote(tagName);

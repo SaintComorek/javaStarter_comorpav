@@ -29,18 +29,18 @@ public class GroupController {
         return groupRepo.findAll();
     }
 
-    @GetMapping("/find/{name}")
+    @GetMapping("/find/name/{name}")
     public List<Group> getGroupByUserName(@PathVariable String name) {
 
         return groupService.findGroupByUserName(name);
     }
 
-    @GetMapping("/find/{lastName}")
+    @GetMapping("/find/lastname/{lastName}")
     public List<Group> getGroupByUserLastName(@PathVariable String lastName) {
 
         return groupService.findGroupByLastName(lastName);
     }
-    @GetMapping("/find/{tagName}")
+    @GetMapping("/find/tagname/{tagName}")
     public List<Group> getGroupByTagName(@PathVariable String tagName) {
 
         return groupService.findGroup(tagName);

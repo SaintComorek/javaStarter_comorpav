@@ -1,6 +1,8 @@
 package com.example;
 
 import com.example.dto.*;
+import com.example.model.Group;
+import com.example.repository.GroupRepo;
 import com.example.service.UserService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,8 @@ class JavaStarterComorpavApplicationTests {
     void contextLoads() {
 
         UserService userService = new UserService();
+
+
 
         UserDto userDto = new UserDto();
         userDto.setName("Rocky");
@@ -48,6 +52,8 @@ class JavaStarterComorpavApplicationTests {
         System.out.println("Tag Data:  " + gson.toJson(tagDto));
         System.out.println("Group Data:  " + gson.toJson(groupDto));
         System.out.println("Note Data:  " + gson.toJson(noteDto));
+        
+
     }
 
 }
