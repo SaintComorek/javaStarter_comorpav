@@ -6,17 +6,13 @@
     "baseUserDto": {
       "id": 0,
       "name": "Rocky",
-      "lastName": "marciano",
-      "age": 22,
-      "status": "Admin"
+      "lastName": "marciano"
     }
   },
   "value": "asdasdadadadsadasfsdfdgr5errgdfbvdberbebe",
   "baseUserDto": {
     "id": 0,
     "name": "Rocky",
-    "lastName": "marciano",
-    "age": 22,
-    "status": "Admin"
+    "lastName": "marciano"
   }
 }

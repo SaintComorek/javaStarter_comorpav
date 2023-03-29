@@ -1,8 +1,12 @@
 package com.example.service;
 
 import com.example.dto.NoteDto;
+import com.example.model.Group;
 import com.example.model.Note;
+import com.example.model.User;
+import com.example.repository.GroupRepo;
 import com.example.repository.NoteRepo;
+import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,18 @@ public class NoteService {
     NoteRepo noteRepo;
 
     @Autowired
+    UserRepo userRepo;
+
+    @Autowired
+    GroupRepo groupRepo;
+
+    @Autowired
     ModelMapper modelMapper;
+
+    private User user = new User();
     private NoteDto noteDto = new NoteDto();
-    public Note note = new Note();
+    private Note note = new Note();
+    private Group group = new Group();
 
     public List<NoteDto> getAllNotes() {
         return this.noteRepo.findAll()
@@ -65,9 +78,48 @@ public class NoteService {
 
     public List<Note> addNote(NoteDto noteDto) {
         note = convertDtoToEntity(noteDto);
-        noteRepo.save(note);
+        List<User> tmp = userRepo.findUserByName(note.getBaseUserModel().getName());
+        user = tmp.get(0);
+        userRepo.delete(tmp.get(0));
+        tmp.remove(0);
+        user.addToNoteList(note);
+        userRepo.save(user);
+        return noteRepo.findAll();
+
+    }
+
+
+    public List<Note> addNoteToGroup(NoteDto noteDto , String groupTag)
+    {
+        note = convertDtoToEntity(noteDto);
+
+        List<User> tmp = userRepo.findUserByName(note.getBaseUserModel().getName());
+        user = tmp.get(0);
+        userRepo.delete(tmp.get(0));
+        tmp.remove(0);
+
+        List<Group> tmpGroup = groupRepo.findGroupByTag_TagName(groupTag);
+
+        group = tmpGroup.get(0);
+        groupRepo.delete(tmpGroup.get(0));
+        tmpGroup.remove(0);
+        group.addGroup_noteList(note);
+        user.addToGroupList(group);
+        userRepo.save(user);
+       // groupRepo.delete(group);
+        //groupRepo.save(group);
+
+        //user = tmp.get(0);
+        //tmpGroup.get(0).
+        //user.addToNoteList(note);
+        //userRepo.delete(tmp.get(0));
+        //tmp.remove(0);
+        //tmpGroup.get(0).setNote(note);
+      //  userRepo.save(user);
+
         return noteRepo.findAll();
     }
+
 
     private NoteDto convertEntityToDto(Note note) {
         noteDto = modelMapper.map(note, NoteDto.class);

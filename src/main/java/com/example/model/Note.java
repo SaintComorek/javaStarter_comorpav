@@ -17,15 +17,17 @@ public class Note {
     private long id;
 
     @Column(name = "value")
-    private StringBuilder value;
+    private String value;
 
     @OneToOne
     @Cascade(CascadeType.ALL)
     private  Tag tag;
 
     @ManyToOne
-    @Cascade(CascadeType.SAVE_UPDATE)
-    private BaseUserModel baseUserModel;;
+    @Cascade(CascadeType.ALL)
+    private BaseUserModel baseUserModel;
+
+    //public  Note(StringBuilder value ,  )
 
 
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,5 +81,6 @@ public class User {
     public void addToNoteList(Note note) {
         noteList.add(note);
     }
+
 
 }

@@ -20,7 +20,6 @@ public class Tag {
     private String tagName;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "name", referencedColumnName = "name")
     private BaseUserModel baseUserModel;
 
 }

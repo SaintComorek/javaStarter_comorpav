@@ -32,8 +32,15 @@ public class NoteController {
     }
 
     @PostMapping()
-    public List<Note> postTag(@RequestBody NoteDto noteDto) {
+    public List<Note> postNote(@RequestBody NoteDto noteDto) {
         noteService.addNote(noteDto);
+        return noteRepo.findAll();
+    }
+
+    @PostMapping("/add/{grouptag}")
+    public List<Note> postNoteToGroup(@RequestBody NoteDto noteDto , @PathVariable String grouptag) {
+
+        noteService.addNoteToGroup(noteDto , grouptag);
         return noteRepo.findAll();
     }
 
@@ -53,14 +60,7 @@ public class NoteController {
 
         return noteService.findNote(tagName);
     }
-    /*
-    @GetMapping("/find/{emailAddress}")
-    public List<Note> gatNoteByUserEmailAddress(@PathVariable String emailAddress) {
 
-        return noteService.findNoteByEmailAddress(emailAddress);
-    }
-
-     */
 
     @GetMapping("/{id}")
     public Optional<Note> getNote(@PathVariable long id) {

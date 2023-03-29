@@ -33,7 +33,7 @@ public class GroupService {
     }
     public List<Group> findGroup(String name)
     {
-        return groupRepo.findByTag_TagName(name);
+        return groupRepo.findGroupByTag_TagName(name);
     }
     public List<Group> findGroupByUserName(String name)
     {
@@ -79,6 +79,7 @@ public class GroupService {
         userRepo.save(user);
         return groupRepo.findAll();
     }
+
 
     private GroupDto convertEntityToDto(Group group) {
         groupDto = modelMapper.map(group, GroupDto.class);
