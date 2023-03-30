@@ -29,6 +29,12 @@ public class GroupController {
         return groupRepo.findAll();
     }
 
+    @PutMapping("/update/{tagname}")
+    public List <Group> updateTag( @RequestBody GroupDto groupDto, @PathVariable String tagname)
+    {
+        return groupService.update(groupDto , tagname);
+    }
+
     @GetMapping("/find/name/{name}")
     public List<Group> getGroupByUserName(@PathVariable String name) {
 

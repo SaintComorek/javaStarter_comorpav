@@ -110,7 +110,11 @@ public class NoteService {
         List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
         userRepo.delete(tmpUser.get(0));
         tmpUser.get(0).addToNoteList(note);
+
         tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
+        tmpUser.get(0).getGroupTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
+        tmpUser.get(0).getTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
+
         tmpGroup.get(0).addGroup_noteList(note);
         tmpUser.get(0).addToGroupList(tmpGroup.get(0));
         userRepo.save(tmpUser.get(0));
@@ -119,7 +123,6 @@ public class NoteService {
 
         return noteRepo.findAll();
     }
-
 
     private NoteDto convertEntityToDto(Note note) {
         noteDto = modelMapper.map(note, NoteDto.class);

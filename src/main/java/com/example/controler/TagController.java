@@ -71,6 +71,12 @@ public class TagController {
         return tagService.deleteMethod(id);
     }
 
+    @DeleteMapping("/delete/{name}/{tagname}")
+    public List<Tag> deleteTag(@PathVariable String name , @PathVariable String tagname)
+    {
+        return  tagService.deleteMethod(name , tagname);
+    }
+
 
 
     /*

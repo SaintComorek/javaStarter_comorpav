@@ -8,6 +8,8 @@ import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +20,8 @@ public class GroupService {
     GroupRepo groupRepo;
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    UserService userService;
     @Autowired
     ModelMapper modelMapper;
     private GroupDto groupDto = new GroupDto();
@@ -77,7 +81,6 @@ public class GroupService {
         group = convertDtoToEntity(groupDto);
         List<User> tmp = userRepo.findUserByName(group.getBaseUserModel().getName());
         user = tmp.get(0);
-        user.addToTagList(group.getTag());
         userRepo.delete(tmp.get(0));
         tmp.remove(0);
         user.addToGroupList(group);
@@ -85,6 +88,22 @@ public class GroupService {
         return groupRepo.findAll();
     }
 
+
+    public List <Group> update(GroupDto groupDto,  String tagname)
+    {
+        group = convertDtoToEntity(groupDto);
+        List<User> tmpUser = userService.findByName(group.getBaseUserModel().getName());
+        List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
+        userRepo.delete(tmpUser.get(0));
+        tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
+        tmpUser.get(0).addToGroupList(group);
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+        tmpGroup.remove(0);
+
+
+        return groupRepo.findAll();
+    }
     private GroupDto convertEntityToDto(Group group) {
         groupDto = modelMapper.map(group, GroupDto.class);
         return groupDto;
