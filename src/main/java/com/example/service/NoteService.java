@@ -10,6 +10,8 @@ import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +25,12 @@ public class NoteService {
     UserRepo userRepo;
     @Autowired
     GroupRepo groupRepo;
+
+    @Autowired
+    GroupService groupService;
+
+    @Autowired
+    UserService userService;
     @Autowired
     ModelMapper modelMapper;
     private NoteDto noteDto = new NoteDto();
@@ -36,17 +44,19 @@ public class NoteService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-    public List<Note> findNote(String name)
-    {
+
+    public List<Note> findNote(String name) {
         return noteRepo.findByTag_TagName(name);
     }
-    public List<Note> findNoteByUserName(String name)
-    {
+
+    public List<Note> findNoteByUserName(String name) {
         return noteRepo.findByBaseUserModel_Name(name);
     }
+
     public List<Note> findNoteByLastName(String lastName) {
         return noteRepo.findByBaseUserModel_LastName(lastName);
     }
+
     /*
     public List<Note> findNoteByEmailAddress(String emailAddress) {
         return noteRepo.findByBaseUserModel_EmailAddress(emailAddress);
@@ -71,17 +81,18 @@ public class NoteService {
         }
         return noteRepo.findAll();
     }
-/*
-    public List<Note> addNote(NoteDto noteDto) {
-        note = convertDtoToEntity(noteDto);
-        noteRepo.save(note);
-        return noteRepo.findAll();
-    }
 
- */
+    /*
+        public List<Note> addNote(NoteDto noteDto) {
+            note = convertDtoToEntity(noteDto);
+            noteRepo.save(note);
+            return noteRepo.findAll();
+        }
+
+     */
     public List<Note> addNote(NoteDto noteDto) {
         note = convertDtoToEntity(noteDto);
-        List<User> tmp = userRepo.findUserByName(note.getBaseUserModel().getName());
+        List<User> tmp = userService.findByName(note.getBaseUserModel().getName());
         user = tmp.get(0);
         userRepo.delete(tmp.get(0));
         tmp.remove(0);
@@ -92,36 +103,19 @@ public class NoteService {
     }
 
 
-    public List<Note> addNoteToGroup(NoteDto noteDto , String groupTag)
-    {
+    public List<Note> addNoteToGroup(NoteDto noteDto, String groupTag) {
+
         note = convertDtoToEntity(noteDto);
-
-        List<User> tmp = userRepo.findUserByName(note.getBaseUserModel().getName());
-        user = tmp.get(0);
-        userRepo.delete(tmp.get(0));
-        tmp.remove(0);
-
-        List<Group> tmpGroup = groupRepo.findGroupByBaseUserModel_Name("el");
-        List<Group> tmpGroup2 = groupRepo.findGroupByBaseUserModel_Name(note.getBaseUserModel().getName());
-
-
-
-        group = tmpGroup.get(0);
-        groupRepo.delete(tmpGroup.get(0));
+        List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
+        List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
+        userRepo.delete(tmpUser.get(0));
+        tmpUser.get(0).addToNoteList(note);
+        tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
+        tmpGroup.get(0).addGroup_noteList(note);
+        tmpUser.get(0).addToGroupList(tmpGroup.get(0));
+        userRepo.save(tmpUser.get(0));
         tmpGroup.remove(0);
-        group.addGroup_noteList(note);
-        user.addToGroupList(group);
-        userRepo.save(user);
-        // groupRepo.delete(group);
-        //groupRepo.save(group);
-
-        //user = tmp.get(0);
-        //tmpGroup.get(0).
-        //user.addToNoteList(note);
-        //userRepo.delete(tmp.get(0));
-        //tmp.remove(0);
-        //tmpGroup.get(0).setNote(note);
-        //  userRepo.save(user);
+        tmpUser.remove(0);
 
         return noteRepo.findAll();
     }

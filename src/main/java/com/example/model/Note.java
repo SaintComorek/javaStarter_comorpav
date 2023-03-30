@@ -13,11 +13,11 @@ import org.hibernate.annotations.CascadeType;
 public class Note {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     private long id;
 
     @Column(name = "value")
-    private StringBuilder value;
+    private String value;
 
     @OneToOne
     @Cascade(CascadeType.ALL)

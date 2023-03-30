@@ -35,6 +35,10 @@ public class GroupService {
     {
         return groupRepo.findByTag_TagName(name);
     }
+    public List<Group> findGroupByNameAndTag(String name , String tagName)
+    {
+        return groupRepo.findGroupByBaseUserModel_NameAndTag_TagName(name, tagName);
+    }
     public List<Group> findGroupByUserName(String name)
     {
         return groupRepo.findGroupByBaseUserModel_Name(name);
@@ -73,6 +77,7 @@ public class GroupService {
         group = convertDtoToEntity(groupDto);
         List<User> tmp = userRepo.findUserByName(group.getBaseUserModel().getName());
         user = tmp.get(0);
+        user.addToTagList(group.getTag());
         userRepo.delete(tmp.get(0));
         tmp.remove(0);
         user.addToGroupList(group);

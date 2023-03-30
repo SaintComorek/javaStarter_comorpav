@@ -34,6 +34,10 @@ public class GroupController {
 
         return groupService.findGroupByUserName(name);
     }
+    @GetMapping("/find/name/tag/{name}/{tagname}")
+    public List<Group> getGroupByUserName(@PathVariable String name , @PathVariable String tagname) {
+        return groupService.findGroupByNameAndTag(name, tagname);
+    }
 
     @GetMapping("/find/lastname/{lastName}")
     public List<Group> getGroupByUserLastName(@PathVariable String lastName) {
