@@ -55,14 +55,6 @@ public class GroupController {
 
         return groupService.findGroup(tagName);
     }
-    /*
-    @GetMapping("/find/{emailAddress}")
-    public List<Group> gatGroupByUserEmailAddress(@PathVariable String emailAddress) {
-
-        return groupService.findGroupByEmailAddress(emailAddress);
-    }
-
-     */
 
     @GetMapping("/{id}")
     public Optional<Group> getGroup(@PathVariable long id) {
@@ -77,6 +69,10 @@ public class GroupController {
     @DeleteMapping("{id}")
     public List<Group> deleteGroup(@PathVariable Long id) {
         return groupService.deleteMethod(id);
+    }
+    @DeleteMapping("/remove/{name}/{tagname}")
+    public List<Group> deleteGroup(@PathVariable String name ,  @PathVariable String tagname) {
+        return groupService.deleteMethod(name, tagname);
     }
 
 }

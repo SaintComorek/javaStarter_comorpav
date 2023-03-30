@@ -35,21 +35,23 @@ public class GroupService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-    public List<Group> findGroup(String name)
-    {
+
+    public List<Group> findGroup(String name) {
         return groupRepo.findByTag_TagName(name);
     }
-    public List<Group> findGroupByNameAndTag(String name , String tagName)
-    {
+
+    public List<Group> findGroupByNameAndTag(String name, String tagName) {
         return groupRepo.findGroupByBaseUserModel_NameAndTag_TagName(name, tagName);
     }
-    public List<Group> findGroupByUserName(String name)
-    {
+
+    public List<Group> findGroupByUserName(String name) {
         return groupRepo.findGroupByBaseUserModel_Name(name);
     }
+
     public List<Group> findGroupByLastName(String lastName) {
         return groupRepo.findGroupByBaseUserModel_LastName(lastName);
     }
+
     /*
 
 
@@ -58,7 +60,7 @@ public class GroupService {
     }
 
      */
-        public List<Group> putMethod(GroupDto groupDto, long id) {
+    public List<Group> putMethod(GroupDto groupDto, long id) {
         Optional<Group> optionalNote = groupRepo.findById(id);
         if (optionalNote.isPresent()) {
             deleteMethod(id);
@@ -77,6 +79,20 @@ public class GroupService {
         return groupRepo.findAll();
     }
 
+    public List<Group> deleteMethod(String name, String tagname) {
+        List<User> tmpUser = userService.findByName(name);
+        List<Group> tmpGroup = findGroupByNameAndTag(name, tagname);
+        userRepo.delete(tmpUser.get(0));
+        tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
+        tmpUser.get(0).getTagList().removeIf(w -> w.getTagName().equals(tagname));
+        tmpUser.get(0).getGroupTagList().removeIf(w -> w.getTagName().equals(tagname));
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+        tmpGroup.remove(0);
+        return groupRepo.findAll();
+    }
+
+
     public List<Group> addGroup(GroupDto groupDto) {
         group = convertDtoToEntity(groupDto);
         List<User> tmp = userRepo.findUserByName(group.getBaseUserModel().getName());
@@ -89,8 +105,7 @@ public class GroupService {
     }
 
 
-    public List <Group> update(GroupDto groupDto,  String tagname)
-    {
+    public List<Group> update(GroupDto groupDto, String tagname) {
         group = convertDtoToEntity(groupDto);
         List<User> tmpUser = userService.findByName(group.getBaseUserModel().getName());
         List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
@@ -104,6 +119,7 @@ public class GroupService {
 
         return groupRepo.findAll();
     }
+
     private GroupDto convertEntityToDto(Group group) {
         groupDto = modelMapper.map(group, GroupDto.class);
         return groupDto;

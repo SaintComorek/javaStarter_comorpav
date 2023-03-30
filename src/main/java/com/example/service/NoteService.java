@@ -109,7 +109,7 @@ public class NoteService {
         List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
         List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
         userRepo.delete(tmpUser.get(0));
-        tmpUser.get(0).addToNoteList(note);
+        //tmpUser.get(0).addToNoteList(note);
 
         tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
         tmpUser.get(0).getGroupTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
