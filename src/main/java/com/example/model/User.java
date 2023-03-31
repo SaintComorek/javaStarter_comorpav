@@ -96,5 +96,9 @@ public class User {
     {
         tagList.add(tag);
     }
+    public void addToGroupTagList(Tag tag)
+    {
+        groupTagList.add(tag);
+    }
 
 }

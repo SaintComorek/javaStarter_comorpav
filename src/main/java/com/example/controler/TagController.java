@@ -56,6 +56,20 @@ public class TagController {
     }
      */
 
+    @PutMapping("/update/group/{tagname}")
+    public List<Tag> updateGroupTagList(@RequestBody TagDto tagDto, @PathVariable String tagname)
+    {
+        return tagService.updateGroupTag(tagDto , tagname);
+
+    }
+
+    @PutMapping("/update/note/{tagname}")
+    public List<Tag> updateNoteTagList(@RequestBody TagDto tagDto, @PathVariable String tagname)
+    {
+        return tagService.updateNoteTag(tagDto , tagname);
+
+    }
+
     @PostMapping()
     public List<Tag> postTag(@RequestBody TagDto tagDto) {
         return tagService.addTag(tagDto);

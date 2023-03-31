@@ -107,13 +107,24 @@ public class NoteService {
 
         note = convertDtoToEntity(noteDto);
         List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
-        List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
         userRepo.delete(tmpUser.get(0));
-        //tmpUser.get(0).addToNoteList(note);
+        tmpUser.get(0).getGroupList().stream()
+                .forEach(w -> {if (w.getTag().getTagName().equals(groupTag)) {
 
-        tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
-        tmpUser.get(0).getGroupTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
-        tmpUser.get(0).getTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
+                    tmpUser.get(0).getGroupList().remove(w);
+                    removetagFromGroupList(tmpUser.get(0), groupTag);
+                    w.getNoteList().add(note);
+                    tmpUser.get(0).addToGroupList(w);
+
+                }
+                } );
+       /* List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
+        userRepo.delete(tmpUser.get(0));
+
+        //tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
+   //  tmpUser.get(0).getGroupTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
+      //git  tmpUser.get(0).getTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
+        tmpUser.add(removetagFromAllLists(tmpUser.remove(0) , groupTag));
 
         tmpGroup.get(0).addGroup_noteList(note);
         tmpUser.get(0).addToGroupList(tmpGroup.get(0));
@@ -121,8 +132,36 @@ public class NoteService {
         tmpGroup.remove(0);
         tmpUser.remove(0);
 
-        return noteRepo.findAll();
+        */
+        //tmpUser.add(removetagFromNoteList(tmpUser.remove(0), tagName));
+
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+
+        return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
     }
+
+    private User removetagFromAllLists(User user , String tagName)
+    {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+    private User removetagFromGroupList(User user, String tagName) {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+    private User removetagFromNoteList(User user, String tagName) {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+
 
     private NoteDto convertEntityToDto(Note note) {
         noteDto = modelMapper.map(note, NoteDto.class);

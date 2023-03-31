@@ -11,8 +11,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,7 +25,6 @@ public class TagService {
     TagRepo tagRepo;
     @Autowired
     UserRepo userRepo;
-
 
     @Autowired
     UserService userService;
@@ -57,6 +59,8 @@ public class TagService {
     }
 
     public List<Tag> putMethod(TagDto tagDto, long id) {
+        tag = convertDtoToEntity(tagDto);
+        //userService.getListOfUsers().stream().filter(w -> w.)
         Optional<Tag> optionalTag = tagRepo.findById(id);
         if (optionalTag.isPresent()) {
             deleteMethod(id);
@@ -78,17 +82,71 @@ public class TagService {
     public List<Tag> deleteMethod(String name, String tagName) {
         List<User> tmpUser = userService.findByName(name);
         userRepo.delete(tmpUser.get(0));
-        //tmpUser.get(0).getTagList().removeIf(w -> w.getTagName().equals(tagName));
-        //tmpUser.get(0).getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
-        //   tmpUser.get(0).getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+        removetagFromAllLists(tmpUser.get(0),tagName );
+        userRepo.save(removetagFromAllLists(tmpUser.get(0), tagName));
+        tmpUser.remove(0);
 
-            userRepo.save(removetagFromAllLists(tmpUser.get(0) , tagName));
-            tmpUser.remove(0);
-
-        //List<Tag> tmpTag = tagRepo.findTagByTagName(tagName);
-       // tagRepo.delete(tmpTag.get(0));
         return tagRepo.findAll();
     }
+
+    public  List<Tag> updateTag(TagDto tagDto, String tagName)
+    {
+        tag = convertDtoToEntity(tagDto);
+        List<User> tmpUser = userService.findByName(tag.getBaseUserModel().getName());
+        userRepo.delete(tmpUser.get(0));
+        updateGroupTag( tagDto,  tagName);
+        updateNoteTag( tagDto,  tagName);
+        tmpUser.get(0).getTagList().stream()
+                .forEach(w -> { if (w.getTagName().equals(tagName))
+                {
+                    tmpUser.get(0).getTagList().remove(w);
+                    w = tag;
+                    tmpUser.get(0).addtoTagList(w);
+                }});
+
+        tmpUser.add(removetagFromAllLists(tmpUser.remove(0), tagName));
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+        return tagRepo.findTagByBaseUserModel_Name(tag.getBaseUserModel().getName());
+    }
+
+    public List<Tag> updateGroupTag(TagDto tagDto, String tagName) {
+        tag = convertDtoToEntity(tagDto);
+        List<User> tmpUser = userService.findByName(tag.getBaseUserModel().getName());
+        userRepo.delete(tmpUser.get(0));
+        tmpUser.get(0).getGroupList().stream()
+                        .forEach(w -> { if (w.getTag().getTagName().equals(tagName))
+                        {
+                            tmpUser.get(0).getGroupList().remove(w);
+                            w.setTag(tag);
+                            tmpUser.get(0).addToGroupList(w);
+                        }});
+
+
+        tmpUser.add(removetagFromGroupList(tmpUser.remove(0), tagName));
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+        return tagRepo.findTagByBaseUserModel_Name(tag.getBaseUserModel().getName());
+    }
+
+    public List<Tag> updateNoteTag(TagDto tagDto , String tagName )
+    {
+        tag = convertDtoToEntity(tagDto);
+        List<User> tmpUser = userService.findByName(tag.getBaseUserModel().getName());
+        userRepo.delete(tmpUser.get(0));
+        tmpUser.get(0).getNoteList().stream()
+                .forEach(w -> { if (w.getTag().getTagName().equals(tagName))
+                {
+                    tmpUser.get(0).getNoteList().remove(w);
+                    w.setTag(tag);
+                    tmpUser.get(0).addToNoteList(w);
+                }});
+        tmpUser.add(removetagFromNoteList(tmpUser.remove(0), tagName));
+        userRepo.save(tmpUser.get(0));
+        tmpUser.remove(0);
+        return tagRepo.findTagByBaseUserModel_Name(tag.getBaseUserModel().getName());
+    }
+
 
     public List<Tag> addTag(TagDto tagDto) {
         tag = convertDtoToEntity(tagDto);
@@ -101,11 +159,22 @@ public class TagService {
         return tagRepo.findAll();
     }
 
-    private User removetagFromAllLists(User user , String tagName)
-    {
+    private User removetagFromAllLists(User user, String tagName) {
         user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
         user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
         user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+    private User removetagFromGroupList(User user, String tagName) {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+    private User removetagFromNoteList(User user, String tagName) {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
 
         return user;
     }
