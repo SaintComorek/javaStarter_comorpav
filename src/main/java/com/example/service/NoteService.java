@@ -81,6 +81,17 @@ public class NoteService {
         }
         return noteRepo.findAll();
     }
+    /*
+    public List<Note> deleteMethod(String name , String tagName) {
+        Optional<Note> optionalNote = noteRepo.findById(id);
+        if (optionalNote.isPresent()) {
+            note = optionalNote.get();
+            noteRepo.delete(note);
+        }
+        return noteRepo.findAll();
+    }
+
+     */
 
     /*
         public List<Note> addNote(NoteDto noteDto) {
@@ -118,26 +129,9 @@ public class NoteService {
 
                 }
                 } );
-       /* List<Group> tmpGroup = groupService.findGroupByNameAndTag(note.getBaseUserModel().getName(), groupTag);
-        userRepo.delete(tmpUser.get(0));
-
-        //tmpUser.get(0).getGroupList().removeIf(w -> w.equals(tmpGroup.get(0)));
-   //  tmpUser.get(0).getGroupTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
-      //git  tmpUser.get(0).getTagList().removeIf(w -> w.equals(tmpGroup.get(0).getTag()));
-        tmpUser.add(removetagFromAllLists(tmpUser.remove(0) , groupTag));
-
-        tmpGroup.get(0).addGroup_noteList(note);
-        tmpUser.get(0).addToGroupList(tmpGroup.get(0));
-        userRepo.save(tmpUser.get(0));
-        tmpGroup.remove(0);
-        tmpUser.remove(0);
-
-        */
-        //tmpUser.add(removetagFromNoteList(tmpUser.remove(0), tagName));
 
         userRepo.save(tmpUser.get(0));
         tmpUser.remove(0);
-
         return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
     }
 
