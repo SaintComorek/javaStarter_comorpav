@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,16 +18,23 @@ public class Note {
     @GeneratedValue(strategy= GenerationType.TABLE)
     private long id;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "value")
     private String value;
 
-    @OneToOne
+    @OneToMany
     @Cascade(CascadeType.ALL)
-    private  Tag tag;
+    private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
     @Cascade(CascadeType.ALL)
     private BaseUserModel baseUserModel;;
 
+    public void addToTagList(Tag tag)
+    {
+        tags.add(tag);
+    }
 
 }

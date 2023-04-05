@@ -45,9 +45,11 @@ public class NoteService {
                 .collect(Collectors.toList());
     }
 
-    public List<Note> findNote(String name) {
+   /* public List<Note> findNote(String name) {
         return noteRepo.findByTag_TagName(name);
     }
+
+    */
 
     public List<Note> findNoteByUserName(String name) {
         return noteRepo.findByBaseUserModel_Name(name);
@@ -57,12 +59,6 @@ public class NoteService {
         return noteRepo.findByBaseUserModel_LastName(lastName);
     }
 
-    /*
-    public List<Note> findNoteByEmailAddress(String emailAddress) {
-        return noteRepo.findByBaseUserModel_EmailAddress(emailAddress);
-    }
-
-     */
     public List<Note> putMethod(NoteDto noteDto, long id) {
         Optional<Note> optionalNote = noteRepo.findById(id);
         if (optionalNote.isPresent()) {
@@ -79,6 +75,18 @@ public class NoteService {
             note = optionalNote.get();
             noteRepo.delete(note);
         }
+        return noteRepo.findAll();
+    }
+
+    public List<Note> deleteMethod(String username, String tagName) {
+        List<User> tmpUser = userService.findByName(username);
+        userService.deleteUser(tmpUser.get(0));
+        tmpUser.get(0).getNoteList().forEach(note -> note.getTags().forEach(tag -> {
+            if (tag.getTagName().equals(tagName)) {
+
+                tmpUser.get(0).getNoteList().remove(note);
+            }
+        }));
         return noteRepo.findAll();
     }
     /*
@@ -106,8 +114,9 @@ public class NoteService {
         List<User> tmp = userService.findByName(note.getBaseUserModel().getName());
         user = tmp.get(0);
         userRepo.delete(tmp.get(0));
-        tmp.remove(0);
         user.addToNoteList(note);
+        user.getNoteTagList().addAll(note.getTags());
+        tmp.remove(0);
         userRepo.save(user);
         return noteRepo.findAll();
 
@@ -118,44 +127,45 @@ public class NoteService {
 
         note = convertDtoToEntity(noteDto);
         List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
-        userRepo.delete(tmpUser.get(0));
-        tmpUser.get(0).getGroupList().stream()
-                .forEach(w -> {if (w.getTag().getTagName().equals(groupTag)) {
+        userService.deleteUser(tmpUser.get(0));
+        tmpUser.get(0).getGroupList().stream().forEach(group -> group.getTags().forEach(tag -> {
+            if (tag.getTagName().equals(groupTag)) {
+                tmpUser.get(0).getGroupList().remove(group);
+                group.addGroup_noteList(note);
+                tmpUser.get(0).getGroupList().add(group);
+            }
+        }));
 
-                    tmpUser.get(0).getGroupList().remove(w);
-                    removetagFromGroupList(tmpUser.get(0), groupTag);
-                    w.getNoteList().add(note);
-                    tmpUser.get(0).addToGroupList(w);
-
-                }
-                } );
-
-        userRepo.save(tmpUser.get(0));
+        userService.saveUser(tmpUser.get(0));
         tmpUser.remove(0);
         return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
     }
 
-    private User removetagFromAllLists(User user , String tagName)
-    {
-        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
-        user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
-        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+    public List<Note> addNoteToGroup(String userName, NoteDto noteDto, String groupName) {
 
-        return user;
-    }
-    private User removetagFromGroupList(User user, String tagName) {
-        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
-        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+        note = convertDtoToEntity(noteDto);
+        List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
+        userService.deleteUser(tmpUser.get(0));
+        tmpUser.get(0).getGroupList().stream().forEach(group -> {
+            if (group.getName().equals(groupName)) {
+                tmpUser.get(0).getGroupList().remove(group);
+                group.getNoteList().add(note);
+                tmpUser.get(0).getGroupList().add(group);
 
-        return user;
+            }
+        });
+        userService.saveUser(tmpUser.get(0));
+        tmpUser.remove(0);
+        return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
     }
+
+
     private User removetagFromNoteList(User user, String tagName) {
         user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
         user.getNoteTagList().removeIf(w -> w.getTagName().equals(tagName));
 
         return user;
     }
-
 
     private NoteDto convertEntityToDto(Note note) {
         noteDto = modelMapper.map(note, NoteDto.class);

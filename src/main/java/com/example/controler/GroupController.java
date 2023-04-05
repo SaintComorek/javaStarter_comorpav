@@ -5,6 +5,7 @@ import com.example.model.Group;
 import com.example.repository.GroupRepo;
 import com.example.service.GroupService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,21 +41,25 @@ public class GroupController {
 
         return groupService.findGroupByUserName(name);
     }
-    @GetMapping("/find/name/tag/{name}/{tagname}")
+   /*@GetMapping("/find/name/tag/{name}/{tagname}")
     public List<Group> getGroupByUserName(@PathVariable String name , @PathVariable String tagname) {
         return groupService.findGroupByNameAndTag(name, tagname);
     }
 
+    */
+
     @GetMapping("/find/lastname/{lastName}")
-    public List<Group> getGroupByUserLastName(@PathVariable String lastName) {
+    public List<Group> getGroupByUserLastName(@PathVariable String lastName ) {
 
         return groupService.findGroupByLastName(lastName);
     }
-    @GetMapping("/find/tagname/{tagName}")
+  /*  @GetMapping("/find/tagname/{tagName}")
     public List<Group> getGroupByTagName(@PathVariable String tagName) {
 
         return groupService.findGroup(tagName);
     }
+
+   */
 
     @GetMapping("/{id}")
     public Optional<Group> getGroup(@PathVariable long id) {

@@ -1,9 +1,7 @@
 package com.example.service;
 
-import com.example.config.ConfigFile;
 import com.example.dto.DtoCollection;
 import com.example.dto.UserDto;
-import com.example.model.Group;
 import com.example.model.ModelCollection;
 import com.example.model.Note;
 import com.example.model.User;
@@ -11,7 +9,6 @@ import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +60,27 @@ public class UserService {
             user = optionalUser.get();
             userRepo.delete(user);
         }
+        return userRepo.findAll();
+    }
+    public void deleteUser(User user)
+    {
+        userRepo.delete(user);
+    }
+    public void saveUser(User user)
+    {
+        userRepo.save(user);
+    }
+
+
+
+    public List<User> deleteUserByLastName(String lastName) {
+        List<User> tmpUser = userRepo.findAll();
+        tmpUser.stream()
+                .forEach(w -> {
+                    if (w.getLastName().equals(lastName)) {
+                        userRepo.delete(w);
+                    }
+                });
         return userRepo.findAll();
     }
 

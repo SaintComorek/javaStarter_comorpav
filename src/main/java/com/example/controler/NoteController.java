@@ -53,11 +53,13 @@ public class NoteController {
 
         return noteService.findNoteByLastName(lastName);
     }
-    @GetMapping("/find/tagname/{tagName}")
+   /* @GetMapping("/find/tagname/{tagName}")
     public List<Note> getNoteByTagName(@PathVariable String tagName) {
 
         return noteService.findNote(tagName);
     }
+
+    */
 
     @GetMapping("/{id}")
     public Optional<Note> getNote(@PathVariable long id) {

@@ -12,6 +12,6 @@ public interface NoteRepo extends JpaRepository<Note, Long> {
    // List<Note> findByBaseUserModel_EmailAddress(String emaillAddress);
     List<Note> findByBaseUserModel_LastName(String lastName);
     List<Note> findByBaseUserModel_Name(String userName);
-    List<Note> findByTag_TagName(String tagName);
+    //List<Note> findByTag_TagName(String tagName);
 
 }

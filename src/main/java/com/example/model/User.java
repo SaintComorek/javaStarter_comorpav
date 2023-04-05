@@ -84,13 +84,11 @@ public class User {
 
     public void addToGroupList(Group group) {
         groupList.add(group);
-        groupTagList.add(group.getTag());
-        tagList.add(group.getTag());
     }
     public void addToNoteList(Note note) {
         noteList.add(note);
-        noteTagList.add(note.getTag());
-        tagList.add(note.getTag());
+        //noteTagList.add(note.getTags());
+        //tagList.add(note.getTags());
     }
     public void addtoTagList(Tag tag)
     {
@@ -99,6 +97,10 @@ public class User {
     public void addToGroupTagList(Tag tag)
     {
         groupTagList.add(tag);
+    }
+    public void addToNoteTagList(Tag tag)
+    {
+        noteTagList.add(tag);
     }
 
 }

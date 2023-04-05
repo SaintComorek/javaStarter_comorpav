@@ -27,19 +27,31 @@ class JavaStarterComorpavApplicationTests {
         baseUserDto.setUpBaseData(userDto);
 
 
+        /*
+
         TagDto tagDto = new TagDto(1  , "default" , baseUserDto );
-        NoteDto noteDto = new NoteDto(1 , tagDto , "asdasdadadadsadasfsdfdgr5errgdfbvdberbebe" ,baseUserDto);
-        NoteDto noteDto2 = new NoteDto(2 , tagDto , "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec vitae arcu. Sed convallis magna eu sem." +
+       // NoteDto noteDto = new NoteDto(1 ,  , "asdasdadadadsadasfsdfdgr5errgdfbvdberbebe" ,baseUserDto);
+        NoteDto noteDto2 = new NoteDto(2 , "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec vitae arcu. Sed convallis magna eu sem." +
                 "Maecenas libero. Etiam dictum tincidunt diam. Curabitur sagittis hendrerit ante. Et harum quidem rerum facilis est et" +
                 "expedita distinctio. Pellentesque ipsum. Fusce suscipit libero eget elit. Class aptent taciti sociosqu ad litora torquent " +
                 "per conubia nostra, per inceptos hymenaeos. In rutrum. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, se" ,baseUserDto);
-        GroupDto groupDto = new GroupDto(1 ,noteDto , tagDto , baseUserDto);
+
+        noteDto2.addToTagsList(tagDto);
+        GroupDto groupDto = new GroupDto(1 ,noteDto2 , tagDto , baseUserDto);
 
 
+         */
+        TagDto tagDto = new TagDto(1  , "default" , baseUserDto );
+        NoteDto noteDto2 = new NoteDto();
+        noteDto2.setName("first");
+        noteDto2.setBaseUserDto(baseUserDto);
+        noteDto2.setId(1);
+        noteDto2.addToTagsList(tagDto);
+        noteDto2.setValue("loremipsum");
 
-        userDto.setNoteDtoToList(noteDto);
+       // userDto.setNoteDtoToList(noteDto);
         userDto.setNoteDtoToList(noteDto2);
-        userDto.setGroupDtoToList(groupDto);
+       // userDto.setGroupDtoToList(groupDto);
         userDto.setTagDtoToList(tagDto);
 
 
@@ -50,8 +62,8 @@ class JavaStarterComorpavApplicationTests {
         System.out.println("Model Values: " + value2);
         System.out.println("Base Data:  " + gson.toJson(baseUserDto));
         System.out.println("Tag Data:  " + gson.toJson(tagDto));
-        System.out.println("Group Data:  " + gson.toJson(groupDto));
-        System.out.println("Note Data:  " + gson.toJson(noteDto));
+       // System.out.println("Group Data:  " + gson.toJson(groupDto));
+        System.out.println("Note Data:  " + gson.toJson(noteDto2));
         
 
     }

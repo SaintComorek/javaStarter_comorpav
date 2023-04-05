@@ -56,11 +56,10 @@ public class TagController {
     }
      */
 
-    @PutMapping("/update/group/{tagname}")
-    public List<Tag> updateGroupTagList(@RequestBody TagDto tagDto, @PathVariable String tagname)
+    @PutMapping("/update/group/{username}/{tagname}")
+    public List<Tag> updateGroupTagList(@RequestBody TagDto tagDto, @PathVariable String username, @PathVariable String tagname)
     {
-        return tagService.updateGroupTag(tagDto , tagname);
-
+        return tagService.updateGroupTag(username, tagDto , tagname);
     }
 
     @PutMapping("/update/note/{tagname}")
@@ -89,6 +88,11 @@ public class TagController {
     public List<Tag> deleteTag(@PathVariable String name , @PathVariable String tagname)
     {
         return  tagService.deleteMethod(name , tagname);
+    }
+    @PutMapping("/add/{username}/{groupname}")
+    public List<Tag> addTagToGroup(@PathVariable String name , @PathVariable String groupname , @RequestBody TagDto tagDto)
+    {
+        return tagService.addTagToGroup(name, groupname, tagDto);
     }
 
 

@@ -1,15 +1,14 @@
 package com.example.dto;
 
-import com.example.model.User;
+import com.example.model.BaseUserModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,13 +18,34 @@ public class NoteDto {
     @NotBlank(message = "Note id")
     private long id;
 
+    @NotBlank(message = "Note name")
+    private String name;
+
     @NotBlank(message = "tag name")
-    private TagDto tag;
+    private List<TagDto> tags ;
 
     @NotBlank(message = "value")
     private String value;
 
     @NotBlank(message = "User data")
-    private  BaseUserDto baseUserDto;
+    private BaseUserDto baseUserDto;
 
+
+    public void NoteDto(String name , TagDto tagDto  , BaseUserModel baseUserModel){
+        this.id = id;
+        this.name = name;
+        addToTagsList(tagDto);
+        this.baseUserDto = baseUserDto;
+    }
+
+    public NoteDto(int i, String s, BaseUserDto baseUserDto) {
+        this.id = id;
+        this.value = s;
+        this.tags = Collections.emptyList();
+        this.value = value;
+    }
+
+    public void addToTagsList(TagDto tagDto) {
+        tags.add(tagDto);
+    }
 }

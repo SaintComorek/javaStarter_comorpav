@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.GroupDto;
 import com.example.model.Group;
+import com.example.model.Tag;
 import com.example.model.User;
 import com.example.repository.GroupRepo;
 import com.example.repository.UserRepo;
@@ -36,14 +37,6 @@ public class GroupService {
                 .collect(Collectors.toList());
     }
 
-    public List<Group> findGroup(String name) {
-        return groupRepo.findByTag_TagName(name);
-    }
-
-    public List<Group> findGroupByNameAndTag(String name, String tagName) {
-        return groupRepo.findGroupByBaseUserModel_NameAndTag_TagName(name, tagName);
-    }
-
     public List<Group> findGroupByUserName(String name) {
         return groupRepo.findGroupByBaseUserModel_Name(name);
     }
@@ -52,14 +45,6 @@ public class GroupService {
         return groupRepo.findGroupByBaseUserModel_LastName(lastName);
     }
 
-    /*
-
-
-    public List<Group> findGroupByEmailAddress(String emailAddress) {
-        return groupRepo.findGroupByBaseUserModel_EmailAddress(emailAddress);
-    }
-
-     */
     public List<Group> putMethod(GroupDto groupDto, long id) {
         Optional<Group> optionalNote = groupRepo.findById(id);
         if (optionalNote.isPresent()) {
@@ -79,9 +64,31 @@ public class GroupService {
         return groupRepo.findAll();
     }
 
-    public List<Group> deleteMethod(String name, String tagname) {
-        List<User> tmpUser = userService.findByName(name);
-        List<Group> tmpGroup = findGroupByNameAndTag(name, tagname);
+    public List<Group> deleteMethod(String username, String name) {
+        List<User> tmpUser = userService.findByName(username);
+
+        tmpUser.get(0).getGroupList().stream()
+                .forEach(group -> {
+                    if (group.getName().equals(name)) {
+                        tmpUser.get(0).getGroupList().remove(group);
+                        List<Tag> tmpTag = group.getTags();
+                        // create check function for checking if group tag is  used in another group
+                        for (int i = 0; i < tmpTag.size(); i++) {
+                            final int tmp = i;
+                            tmpUser.get(0).getGroupList().stream().forEach(w -> w.getTags().forEach(tag -> {
+                                if (tag.getTagName().equals(tmpTag.get(tmp))) {
+
+                                    tmpTag.remove(tag);
+                                }
+                            }));
+                        }
+                        tmpUser.get(0).getGroupTagList().remove(tmpTag);
+                    }
+                });
+        userService.saveUser(tmpUser.get(0));
+        tmpUser.remove(0);
+        return groupRepo.findGroupByBaseUserModel_Name(username);
+/*
         userRepo.delete(tmpUser.get(0));
         tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
         tmpUser.get(0).getTagList().removeIf(w -> w.getTagName().equals(tagname));
@@ -89,9 +96,22 @@ public class GroupService {
         userRepo.save(tmpUser.get(0));
         tmpUser.remove(0);
         tmpGroup.remove(0);
-        return groupRepo.findAll();
+
+ */
+        // return groupRepo.findAll();
     }
 
+    public boolean checkTagsUsing(List<Tag> tagList, List<Group> groupsList) {
+
+        groupsList.stream().map(group -> {
+            if (group.getTags().contains(tagList.stream())) {
+                return true;
+            }
+            return false;
+        });
+
+        return false;
+    }
 
     public List<Group> addGroup(GroupDto groupDto) {
         group = convertDtoToEntity(groupDto);
@@ -108,17 +128,25 @@ public class GroupService {
     public List<Group> update(GroupDto groupDto, String tagname) {
         group = convertDtoToEntity(groupDto);
         List<User> tmpUser = userService.findByName(group.getBaseUserModel().getName());
-        List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
+      //  List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
         userRepo.delete(tmpUser.get(0));
-        tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
+        //tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
         tmpUser.get(0).addToGroupList(group);
         userRepo.save(tmpUser.get(0));
         tmpUser.remove(0);
-        tmpGroup.remove(0);
+      //  tmpGroup.remove(0);
 
 
         return groupRepo.findAll();
     }
+
+    private User removeGroupFromAllLists(User user, String tagName) {
+        user.getTagList().removeIf(w -> w.getTagName().equals(tagName));
+        user.getGroupTagList().removeIf(w -> w.getTagName().equals(tagName));
+
+        return user;
+    }
+
 
     private GroupDto convertEntityToDto(Group group) {
         groupDto = modelMapper.map(group, GroupDto.class);

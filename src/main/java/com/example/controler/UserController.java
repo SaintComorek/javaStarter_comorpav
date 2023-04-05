@@ -41,11 +41,16 @@ public class UserController {
         return userService.putMethod(userDto , id);
     }
 
-    @DeleteMapping ("{id}")
+    @DeleteMapping ("/delete/id/{id}")
     public List<User> deleteUsers(@PathVariable Long id)
     {
         return userService.deleteMethod(id);
     }
 
+    @DeleteMapping ("/delete/lastname/{lastname}")
+    public List<User> deleteUsers(@PathVariable String lastname)
+    {
+        return userService.deleteUserByLastName(lastname);
+    }
 }
 
