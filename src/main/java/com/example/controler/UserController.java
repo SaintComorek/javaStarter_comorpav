@@ -38,7 +38,7 @@ public class UserController {
     @PutMapping("{id}")
     public List<User> putUsers(@RequestBody UserDto userDto, @PathVariable Long id)
     {
-        return userService.putMethod(userDto , id);
+        return userService.updateUser(userDto , id);
     }
 
     @DeleteMapping ("/delete/id/{id}")

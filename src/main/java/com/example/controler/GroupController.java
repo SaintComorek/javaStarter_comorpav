@@ -19,6 +19,8 @@ public class GroupController {
     private final GroupRepo groupRepo;
     private final GroupService groupService;
 
+
+
     @GetMapping()
     public List<Group> getAllGroup() {
         return groupRepo.findAll();
@@ -30,6 +32,7 @@ public class GroupController {
         return groupRepo.findAll();
     }
 
+    //Path variable  methods
     @PutMapping("/update/{tagname}")
     public List <Group> updateTag( @RequestBody GroupDto groupDto, @PathVariable String tagname)
     {
@@ -41,25 +44,27 @@ public class GroupController {
 
         return groupService.findGroupByUserName(name);
     }
-   /*@GetMapping("/find/name/tag/{name}/{tagname}")
-    public List<Group> getGroupByUserName(@PathVariable String name , @PathVariable String tagname) {
-        return groupService.findGroupByNameAndTag(name, tagname);
+
+    //Request Parameter methods
+
+    @GetMapping("/find/user")
+    public List<Group> findUserGroups(@RequestParam String name ,@RequestParam String lastname)
+    {
+        return findUserGroups(name , lastname);
     }
 
-    */
+    @PostMapping("/add/group/user")
+    public List<Group> addGroupToUser(@RequestBody GroupDto groupDto, @RequestParam String name , @RequestParam String lastname )
+    {
+        return addGroupToUser(groupDto , name , lastname);
+    }
 
-    @GetMapping("/find/lastname/{lastName}")
-    public List<Group> getGroupByUserLastName(@PathVariable String lastName ) {
+
+    @GetMapping("/find/group/user")
+    public List<Group> getGroupByUserLastName(@RequestParam String lastName ) {
 
         return groupService.findGroupByLastName(lastName);
     }
-  /*  @GetMapping("/find/tagname/{tagName}")
-    public List<Group> getGroupByTagName(@PathVariable String tagName) {
-
-        return groupService.findGroup(tagName);
-    }
-
-   */
 
     @GetMapping("/{id}")
     public Optional<Group> getGroup(@PathVariable long id) {

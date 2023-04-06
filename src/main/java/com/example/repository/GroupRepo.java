@@ -11,6 +11,10 @@ import java.util.List;
 public interface GroupRepo extends JpaRepository<Group , Long> {
     List<Group> findGroupByBaseUserModel_Name(String name);
     List<Group> findGroupByBaseUserModel_LastName(String lastName);
+    //Group findByBaseUserModel_NameAndBaseUserModel_LastNameAndName( String name , String lastname ,String groupname );
+
+
+
    // List<Group> findByTag_TagName(String tagName);
 
     //List<Group> findGroupByBaseUserModel_NameAndTag_TagName(String name , String tagName);

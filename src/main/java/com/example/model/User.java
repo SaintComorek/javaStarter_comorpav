@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,11 +83,14 @@ public class User {
 
     public void addToGroupList(Group group) {
         groupList.add(group);
+        groupTagList.addAll(group.getTags());
+        tagList.addAll(group.getTags());
+
     }
     public void addToNoteList(Note note) {
         noteList.add(note);
-        //noteTagList.add(note.getTags());
-        //tagList.add(note.getTags());
+        noteTagList.addAll(note.getTags());
+        tagList.addAll(note.getTags());
     }
     public void addtoTagList(Tag tag)
     {

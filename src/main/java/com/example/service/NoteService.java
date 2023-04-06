@@ -7,11 +7,13 @@ import com.example.model.User;
 import com.example.repository.GroupRepo;
 import com.example.repository.NoteRepo;
 import com.example.repository.UserRepo;
+import org.modelmapper.Converters;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,35 +23,44 @@ public class NoteService {
 
     @Autowired
     NoteRepo noteRepo;
-    @Autowired
-    UserRepo userRepo;
+
     @Autowired
     GroupRepo groupRepo;
+    @Autowired
+    UserService userService;
 
     @Autowired
     GroupService groupService;
-
-    @Autowired
-    UserService userService;
     @Autowired
     ModelMapper modelMapper;
     private NoteDto noteDto = new NoteDto();
     public Note note = new Note();
-    private User user = new User();
-    private Group group = new Group();
 
-    public List<NoteDto> getAllNotes() {
+    public List<NoteDto> getAllNotesDtos() {
         return this.noteRepo.findAll()
                 .stream()
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
 
-   /* public List<Note> findNote(String name) {
-        return noteRepo.findByTag_TagName(name);
+    public List<Note> getAllNotes() {
+        return noteRepo.findAll();
     }
 
-    */
+
+    public List<Note> getAllUserNotes(String name, String lastname) {
+        return noteRepo.findByBaseUserModel_NameAndBaseUserModel_LastName(name, lastname);
+
+    }
+
+    public List<Note> findNoteById_list(long id) {
+        return noteRepo.findById(id);
+    }
+
+    public Note findNoteId(long id) {
+        return findNoteId(id);
+    }
+
 
     public List<Note> findNoteByUserName(String name) {
         return noteRepo.findByBaseUserModel_Name(name);
@@ -59,26 +70,41 @@ public class NoteService {
         return noteRepo.findByBaseUserModel_LastName(lastName);
     }
 
-    public List<Note> putMethod(NoteDto noteDto, long id) {
-        Optional<Note> optionalNote = noteRepo.findById(id);
-        if (optionalNote.isPresent()) {
-            deleteMethod(id);
-            note = convertDtoToEntity(noteDto);
-            noteRepo.save(note);
-        }
-        return noteRepo.findAll();
+    public User updateNote(NoteDto noteDto, String username, String lastname, String noteName) {
+        note = convertDtoToEntity(noteDto);
+        List<User> tmpUser = userService.getUserAsList(username, lastname);
+        userService.deleteUser(tmpUser.get(0));
+
+        tmpUser.get(0).getNoteList().forEach(w -> {
+            if (w.getName().equals(noteName)) {
+                tmpUser.get(0).getNoteList().remove(w);
+                tmpUser.get(0).getNoteList().add(note);
+            }
+        });
+
+        tmpUser.get(0).getGroupList().forEach(group -> group.getNoteList().forEach(s -> {
+            if (s.getName().equals(noteName)) {
+
+                tmpUser.get(0).getGroupList().remove(group);
+                group.getNoteList().remove(s);
+                group.getNoteList().add(note);
+                tmpUser.get(0).getGroupList().add(group);
+
+            }
+        }));
+
+        userService.saveUser(tmpUser.get(0));
+        return tmpUser.remove(0);
     }
 
-    public List<Note> deleteMethod(long id) {
-        Optional<Note> optionalNote = noteRepo.findById(id);
-        if (optionalNote.isPresent()) {
-            note = optionalNote.get();
-            noteRepo.delete(note);
-        }
-        return noteRepo.findAll();
+    public Note updateById(NoteDto noteDto, long id) {
+        noteRepo.delete(findNoteId(id));
+        note = convertDtoToEntity(noteDto);
+        noteRepo.save(note);
+        return note;
     }
 
-    public List<Note> deleteMethod(String username, String tagName) {
+    public List<Note> deleteNoteFromNotes(String username, String tagName, String noteName) {
         List<User> tmpUser = userService.findByName(username);
         userService.deleteUser(tmpUser.get(0));
         tmpUser.get(0).getNoteList().forEach(note -> note.getTags().forEach(tag -> {
@@ -89,74 +115,118 @@ public class NoteService {
         }));
         return noteRepo.findAll();
     }
-    /*
-    public List<Note> deleteMethod(String name , String tagName) {
-        Optional<Note> optionalNote = noteRepo.findById(id);
-        if (optionalNote.isPresent()) {
-            note = optionalNote.get();
-            noteRepo.delete(note);
-        }
-        return noteRepo.findAll();
+
+    public List<Group> deleteNoteFromGroup(String username, String lastname, String groupName, String noteName) {
+        List<User> tmpUser = userService.findByName(username);
+        userService.deleteUser(tmpUser.get(0));
+
+        tmpUser.get(0).getGroupList().forEach(w -> {
+            if (w.getName().equals(groupName)) {
+                w.getNoteList().forEach(s -> {
+                    if (s.getName().equals(noteName)) {
+
+                        tmpUser.get(0).getGroupList().remove(w);
+                        w.getNoteList().remove(s);
+                        tmpUser.get(0).getGroupList().add(w);
+
+                    }
+                });
+            }
+        });
+
+        userService.saveUser(tmpUser.get(0));
+        return tmpUser.remove(0).getGroupList();
     }
 
-     */
 
-    /*
-        public List<Note> addNote(NoteDto noteDto) {
-            note = convertDtoToEntity(noteDto);
-            noteRepo.save(note);
-            return noteRepo.findAll();
-        }
+    public void deleteNoteById(long id) {
+        noteRepo.delete(findNoteId(id));
+    }
 
-     */
-    public List<Note> addNote(NoteDto noteDto) {
+    public List<Note> addNote(NoteDto noteDto, String name, String lastname) {
         note = convertDtoToEntity(noteDto);
+        List<User> tmpUser = userService.getUserAsList(name, lastname);
+        userService.deleteUser(tmpUser.get(0));
+        tmpUser.get(0).getNoteList().add(note);
+        return tmpUser.remove(0).getNoteList();
+
+/*
         List<User> tmp = userService.findByName(note.getBaseUserModel().getName());
         user = tmp.get(0);
         userRepo.delete(tmp.get(0));
         user.addToNoteList(note);
         user.getNoteTagList().addAll(note.getTags());
+        user.getTagList().addAll(note.getTags());
         tmp.remove(0);
         userRepo.save(user);
         return noteRepo.findAll();
 
+ */
+
     }
 
+    public List<Group> addNoteToUserGroup(NoteDto noteDto, String username, String lastname, String groupname) {
+        note = convertDtoToEntity(noteDto);
+        List<User> tmpuser = userService.getUserAsList(username, lastname);
+        userService.deleteUser(tmpuser.get(0));
+        tmpuser.get(0).getNoteList().add(note);
+        userService.saveUser(tmpuser.get(0));
+        return tmpuser.remove(0).getGroupList();
+    }
 
-    public List<Note> addNoteToGroup(NoteDto noteDto, String groupTag) {
+    public List<Group> addNoteToGroupsByTag(NoteDto noteDto, String username, String lastname, String grouptag) {
 
         note = convertDtoToEntity(noteDto);
         List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
         userService.deleteUser(tmpUser.get(0));
         tmpUser.get(0).getGroupList().stream().forEach(group -> group.getTags().forEach(tag -> {
-            if (tag.getTagName().equals(groupTag)) {
+            if (tag.getTagName().equals(grouptag)) {
                 tmpUser.get(0).getGroupList().remove(group);
                 group.addGroup_noteList(note);
                 tmpUser.get(0).getGroupList().add(group);
             }
         }));
-
+/*
         userService.saveUser(tmpUser.get(0));
         tmpUser.remove(0);
         return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
+
+ */
+        userService.saveUser(tmpUser.get(0));
+        List<Group> tagSelection = new ArrayList<>();
+        tagSelection.clear();
+        tmpUser.get(0).getGroupList().forEach(w -> w.getTags().forEach(s -> {
+            if (s.getTagName().equals(grouptag)) {
+                tagSelection.add(w);
+            }
+        }));
+
+        return tagSelection;
+
     }
 
-    public List<Note> addNoteToGroup(String userName, NoteDto noteDto, String groupName) {
+    public List<Group> addNoteToGroup(NoteDto noteDto, String username, String lastname, String groupname) {
 
         note = convertDtoToEntity(noteDto);
         List<User> tmpUser = userService.findByName(note.getBaseUserModel().getName());
         userService.deleteUser(tmpUser.get(0));
         tmpUser.get(0).getGroupList().stream().forEach(group -> {
-            if (group.getName().equals(groupName)) {
+            if (group.getName().equals(groupname)) {
                 tmpUser.get(0).getGroupList().remove(group);
                 group.getNoteList().add(note);
                 tmpUser.get(0).getGroupList().add(group);
 
             }
         });
+        /*
         userService.saveUser(tmpUser.get(0));
         tmpUser.remove(0);
         return noteRepo.findByBaseUserModel_Name(note.getBaseUserModel().getName());
+
+         */
+
+        userService.saveUser(tmpUser.get(0));
+        return (List) tmpUser.get(0).getGroupList().stream().filter(w -> w.getName().equals(groupname));
     }
 
 
@@ -166,6 +236,7 @@ public class NoteService {
 
         return user;
     }
+
 
     private NoteDto convertEntityToDto(Note note) {
         noteDto = modelMapper.map(note, NoteDto.class);

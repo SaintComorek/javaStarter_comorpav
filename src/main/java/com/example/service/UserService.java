@@ -44,7 +44,16 @@ public class UserService {
         return userRepo.findUserByLastName(lastName);
     }
 
-    public List<User> putMethod(UserDto userDto, long id) {
+    public List<User> getUser(String name , String lastname)
+    {
+        return userRepo.findUserByNameAndLastName(name , lastname);
+    }
+    public List<User> getUserAsList(String name , String lastname)
+    {
+        return userRepo.findUserByNameAndLastName(name , lastname ) ;
+    }
+
+    public List<User> updateUser (UserDto userDto, long id) {
         Optional<User> optionalUser = userRepo.findById(id);
         if (optionalUser.isPresent()) {
             deleteMethod(id);
