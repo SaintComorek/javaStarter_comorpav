@@ -1,0 +1,34 @@
+User
+
+
+get -
+post -
+put -
+delete-
+
+Group
+
+get
+post
+put
+delete
+
+
+Note
+
+
+get
+post
+put
+delete
+
+
+tag
+
+get
+post
+put
+delete
+
+
+// remove all lists and update them by concret object

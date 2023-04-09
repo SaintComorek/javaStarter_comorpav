@@ -1,12 +1,12 @@
 package com.example.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -25,20 +25,14 @@ public class UserDto {
     private int age;
     @NotBlank(message = "status")
     private String status;
-
     @NotBlank(message = "email address is mandatory")
     private String emailAddress;
-
-
-    /*
-    @NotBlank(message = "Group")
-    private GroupDto group;
-    @NotBlank(message = "Note")
-    private NoteDto note;
-    @NotBlank(message = "Tag name ")
-    private TagDto tag;
-
-     */
+    @NotBlank(message = "username")
+    private String username;
+    @NotBlank(message = "password")
+    private String password;
+    @NotBlank(message = "token")
+    private String token;
 
     @NotBlank(message = "Group")
     private List<GroupDto> groupList = new ArrayList<>();
@@ -48,15 +42,12 @@ public class UserDto {
     private List<NoteDto> noteList = new ArrayList<>();
 
 
-
-    public UserDto(String sss, String aaa, int i1, GroupDto groupDto, NoteDto noteDto, TagDto tagDto) {
-    }
-
     public void setUserDto(Long id, String name, String lastname, int age, String status) {
         this.id = id;
         this.name = name;
         this.lastName = lastname;
         this.age = age;
+        this.username = "";
         this.status = status;
 
     }
@@ -66,7 +57,31 @@ public class UserDto {
         this.name = name;
         this.lastName = lastname;
         this.age = age;
+        this.username = "";
         this.status = status;
+
+    }
+
+    public UserDto (String name, String lastname, int age) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.status = "basic";
+        this.emailAddress = "";
+        this.username = "";
+        this.password = "";
+        this.token = "";
+        this.groupList = Collections.emptyList();
+        this.tagList = Collections.emptyList();
+        this.noteList = Collections.emptyList();
+    }
+    public void setUserDto(String name, String lastname,  String username , int age ) {
+        this.id = this.id++;
+        this.name = name;
+        this.lastName = lastname;
+        this.age = age;
+        this.username = username;
+        this.status = "basic";
 
     }
 
@@ -81,10 +96,6 @@ public class UserDto {
     public void setGroupDtoToList(GroupDto groupDto) {
         groupList.add(groupDto);
     }
-
-
-
-
 
 
 }

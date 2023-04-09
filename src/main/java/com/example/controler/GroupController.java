@@ -5,9 +5,7 @@ import com.example.model.Group;
 import com.example.repository.GroupRepo;
 import com.example.service.GroupService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +16,6 @@ public class GroupController {
 
     private final GroupRepo groupRepo;
     private final GroupService groupService;
-
-
 
     @GetMapping()
     public List<Group> getAllGroup() {
@@ -33,10 +29,12 @@ public class GroupController {
     }
 
     //Path variable  methods
-    @PutMapping("/update/{tagname}")
-    public List <Group> updateTag( @RequestBody GroupDto groupDto, @PathVariable String tagname)
+    @PutMapping("/update/tag/user")
+    public String updateTag(@RequestParam String username , @RequestParam String lastname, @RequestParam String grupname, @RequestParam String tagname)
     {
-        return groupService.update(groupDto , tagname);
+        return "Hello world";
+
+
     }
 
     @GetMapping("/find/name/{name}")
@@ -71,6 +69,7 @@ public class GroupController {
         return groupRepo.findById(id);
     }
 
+    /*
     @PutMapping("{id}")
     public List<Group> putGroup(@RequestBody GroupDto groupDto, @PathVariable Long id) {
         return groupService.putMethod(groupDto, id);
@@ -81,8 +80,10 @@ public class GroupController {
         return groupService.deleteMethod(id);
     }
     @DeleteMapping("/remove/{name}/{tagname}")
-    public List<Group> deleteGroup(@PathVariable String name ,  @PathVariable String tagname) {
+    public void deleteGroup(@PathVariable String name ,  @PathVariable String tagname) {
         return groupService.deleteMethod(name, tagname);
     }
+
+     */
 
 }

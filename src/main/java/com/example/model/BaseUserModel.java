@@ -19,6 +19,10 @@ public class BaseUserModel {
     @NotBlank(message = "Name is mandatory")
     @Cascade(CascadeType.ALL)
     private String name;
+
+    @NotBlank(message = "User name is mandatory")
+    @Cascade(CascadeType.ALL)
+    private String username;
     @NotBlank(message = "lastName is mandatory")
     @Cascade(CascadeType.ALL)
     private String lastName;

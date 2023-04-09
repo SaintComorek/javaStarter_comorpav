@@ -1,17 +1,13 @@
 package com.example.service;
 
 import com.example.dto.GroupDto;
+import com.example.dto.TagDto;
 import com.example.model.Group;
-import com.example.model.Tag;
 import com.example.model.User;
 import com.example.repository.GroupRepo;
-import com.example.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,8 +16,6 @@ import java.util.stream.Collectors;
 public class GroupService {
     @Autowired
     GroupRepo groupRepo;
-    @Autowired
-    UserRepo userRepo;
     @Autowired
     UserService userService;
     @Autowired
@@ -45,32 +39,35 @@ public class GroupService {
     public List<Group> findGroupByLastName(String lastName) {
         return groupRepo.findGroupByBaseUserModel_LastName(lastName);
     }
-
-    public List<Group> findUserGroups( String name , String lastname)
+    public List<Group> findUserGroups(String username)
     {
-          List<User> tmpUser = userService.getUser(name , lastname );
-          return  tmpUser.remove(0).getGroupList();
+        return groupRepo.findGroupByBaseUserModel_Username(username);
     }
 
-    public List<Group> addGroupToUser(GroupDto groupDto, String name , String lastname)
-    {
+    public Group findUserGroup(String username, String groupName) {
+        return groupRepo.findByBaseUserModel_UsernameAndName(username ,groupName);
+    }
+
+    public List<Group> addGroupToUser(GroupDto groupDto, String name, String lastname) {
         group = convertDtoToEntity(groupDto);
-        List<User> tmpUser = userService.getUser(name , lastname );
+        List<User> tmpUser = userService.getUser(name, lastname);
         userService.deleteUser(tmpUser.get(0));
         tmpUser.get(0).getGroupList().add(group);
         return tmpUser.remove(0).getGroupList();
     }
 
 
+    public List<Group> editGroupTag(String username , String lastname , String groupname, String tagname, TagDto tagDto) {
 
 
-    public List<Group> putMethod(GroupDto groupDto, long id) {
-        Optional<Group> optionalNote = groupRepo.findById(id);
-        if (optionalNote.isPresent()) {
-            deleteMethod(id);
-            group = convertDtoToEntity(groupDto);
-            groupRepo.save(group);
-        }
+
+
+       // group = groupRepo.findById(id);
+        //if (optionalNote.isPresent()) {
+         //   deleteMethod(id);
+         //   group = convertDtoToEntity(groupDto);
+          //  groupRepo.save(group);
+       // }
         return groupRepo.findAll();
     }
 
@@ -92,44 +89,44 @@ public class GroupService {
         return groupRepo.findGroupByBaseUserModel_Name(username);
     }
 
-    public List<Group> deleteGroupFromUser(GroupDto groupDto, String name , String lastname)
-    {
+    public List<Group> deleteGroupFromUser(GroupDto groupDto, String name, String lastname) {
         group = convertDtoToEntity(groupDto);
-        List<User> tmpUser = userService.getUser(name , lastname );
+        List<User> tmpUser = userService.getUser(name, lastname);
         userService.deleteUser(tmpUser.get(0));
-        tmpUser.get(0).getGroupList().removeIf( w -> w.getName().equals(group.getName()));
+        tmpUser.get(0).getGroupList().removeIf(w -> w.getName().equals(group.getName()));
         return tmpUser.remove(0).getGroupList();
     }
 
     public List<Group> addGroup(GroupDto groupDto) {
         group = convertDtoToEntity(groupDto);
-        List<User> tmp = userRepo.findUserByName(group.getBaseUserModel().getName());
+        List<User> tmp = userService.findByName(group.getBaseUserModel().getName());
         user = tmp.get(0);
-        user.getGroupTagList().addAll(group.getTags());
-        user.getTagList().addAll(group.getTags());
-        userRepo.delete(tmp.get(0));
+        userService.deleteUser(tmp.get(0));
         tmp.remove(0);
         user.addToGroupList(group);
-        userRepo.save(user);
-        return groupRepo.findAll();
-
+        userService.saveUser(user);
+        return user.getGroupList().stream().filter(w -> w.getName().equals(group.getName())).collect(Collectors.toList());
     }
 
 
-    public List<Group> update(GroupDto groupDto, String tagname) {
+    /*
+
+    public List<Group> update(User user , String groupname ,String tagname ) {
+
         group = convertDtoToEntity(groupDto);
         List<User> tmpUser = userService.findByName(group.getBaseUserModel().getName());
-      //  List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
+        //  List<Group> tmpGroup = findGroupByNameAndTag(group.getBaseUserModel().getName(), tagname);
         userRepo.delete(tmpUser.get(0));
         //tmpUser.get(0).getGroupList().remove(tmpGroup.get(0));
         tmpUser.get(0).addToGroupList(group);
         userRepo.save(tmpUser.get(0));
         tmpUser.remove(0);
-      //  tmpGroup.remove(0);
+        //  tmpGroup.remove(0);
 
 
         return groupRepo.findAll();
     }
+     */
 
     private User removeGroupFromAllLists(User user, String tagName) {
         user.getTagList().removeIf(w -> w.getTagName().equals(tagName));

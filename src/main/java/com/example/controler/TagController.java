@@ -2,6 +2,8 @@ package com.example.controler;
 
 import com.example.dto.BaseUserDto;
 import com.example.dto.TagDto;
+import com.example.model.Group;
+import com.example.model.Note;
 import com.example.model.Tag;
 import com.example.repository.TagRepo;
 import com.example.service.TagService;
@@ -89,10 +91,15 @@ public class TagController {
     {
         return  tagService.deleteMethod(name , tagname);
     }
-    @PutMapping("/add/{username}/{groupname}")
-    public List<Tag> addTagToGroup(@PathVariable String name , @PathVariable String groupname , @RequestBody TagDto tagDto)
+    @PostMapping("/add/group/tag")
+    public Group addTagToGroup(@RequestParam String username , @RequestParam String groupname , @RequestBody TagDto tagDto)
     {
-        return tagService.addTagToGroup(name, groupname, tagDto);
+        return tagService.addTagToGroup(username, groupname, tagDto);
+    }
+    @PostMapping("/add/note/tag")
+    public Note addTagToNote(@RequestParam String username , @RequestParam String notename , @RequestBody TagDto tagDto)
+    {
+        return tagService.addTagToNote (username, notename, tagDto);
     }
 
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +17,8 @@ public class BaseUserDto {
     private long id;
     @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "User  is mandatory")
+    private String username;
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
 

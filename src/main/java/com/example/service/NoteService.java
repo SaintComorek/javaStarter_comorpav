@@ -70,6 +70,15 @@ public class NoteService {
         return noteRepo.findByBaseUserModel_LastName(lastName);
     }
 
+    public Note findNote(String username , String groupname)
+    {
+        return  noteRepo.findByBaseUserModel_UsernameAndName(username , groupname);
+    }
+    public List<Note> findNotes(String username)
+    {
+        return noteRepo.findByBaseUserModel_Username(username);
+    }
+
     public User updateNote(NoteDto noteDto, String username, String lastname, String noteName) {
         note = convertDtoToEntity(noteDto);
         List<User> tmpUser = userService.getUserAsList(username, lastname);
@@ -182,7 +191,7 @@ public class NoteService {
         tmpUser.get(0).getGroupList().stream().forEach(group -> group.getTags().forEach(tag -> {
             if (tag.getTagName().equals(grouptag)) {
                 tmpUser.get(0).getGroupList().remove(group);
-                group.addGroup_noteList(note);
+                group.addNote(note);
                 tmpUser.get(0).getGroupList().add(group);
             }
         }));

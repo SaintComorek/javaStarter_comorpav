@@ -31,8 +31,11 @@ public class Group {
     @Cascade(CascadeType.ALL)
     private BaseUserModel baseUserModel;
 
-    public void addGroup_noteList(Note note) {
+    public void addNote(Note note) {
         noteList.add(note);
+    }
+    public void addTag(Tag tag){
+        tags.add(tag);
     }
 
 }
