@@ -1,127 +1,78 @@
 package com.example.controler;
 
-import com.example.dto.BaseUserDto;
 import com.example.dto.TagDto;
-import com.example.model.Group;
-import com.example.model.Note;
 import com.example.model.Tag;
-import com.example.repository.TagRepo;
 import com.example.service.TagService;
-import lombok.RequiredArgsConstructor;;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/tag")
 @RequiredArgsConstructor
 public class TagController {
-    private final TagRepo tagRepo;
-    private final TagService tagService;
+    @Autowired
+    TagService tagService;
 
     @GetMapping()
     public List<Tag> getAllTags() {
-        return tagRepo.findAll();
+        return tagService.getAllTags();
     }
 
     @GetMapping("/{id}")
-    public Optional<Tag> getTag(@PathVariable long id) {
-        return tagRepo.findById(id);
+    public Tag findTag(@PathVariable long id) {
+        return tagService.findById(id);
     }
 
 
-    @GetMapping("/find/name/{name}")
-    public List<Tag> gatTagByUserName(@PathVariable String name) {
+    @GetMapping("/find/user")
+    public Tag findTag(@RequestParam String username, @RequestParam String tagname) {
 
-        return tagService.findTagByUserName(name);
+        return tagService.findTag(tagname, username);
     }
 
-    @GetMapping("/find/lastname/{lastname}")
-    public List<Tag> gatTagByUserLastName(@PathVariable String lastname) {
-
-        return tagService.findTagByLastName(lastname);
+    @PostMapping("/create/group/user")
+    public Tag createTagInGroup(@RequestParam String username, @RequestParam String groupname, @RequestBody TagDto tagDto) {
+        return tagService.createGroupTag(username, groupname, tagDto);
     }
 
-    @GetMapping("/find/tagname/{tagName}")
-    public List<Tag> gatTagByTagName(@PathVariable String tagName) {
-
-        return tagService.findTagByTagName(tagName);
+    @PostMapping("/create/note/user")
+    public Tag createTagInNote(@RequestParam String username, @RequestParam String notename, @RequestBody TagDto tagDto) {
+        return tagService.createNoteTag(username, notename, tagDto);
     }
 
-    /*
-    @GetMapping("/find/{emailAddress}")
-    public List<Tag> gatTagByUserEmailAddress(@PathVariable String emailAddress) {
-
-        return tagService.findTagByUserEmailAddress(emailAddress);
-    }
-     */
-
-    @PutMapping("/update/group/{username}/{tagname}")
-    public List<Tag> updateGroupTagList(@RequestBody TagDto tagDto, @PathVariable String username, @PathVariable String tagname)
-    {
-        return tagService.updateGroupTag(username, tagDto , tagname);
+    @PutMapping("/update/group/user")
+    public Tag updateTagInGroup(@RequestParam String username, @RequestParam String groupname, @RequestParam String tagname, @RequestBody TagDto tagDto) {
+        return tagService.updateTagFromGroup(username, groupname, tagname, tagDto);
     }
 
-    @PutMapping("/update/note/{tagname}")
-    public List<Tag> updateNoteTagList(@RequestBody TagDto tagDto, @PathVariable String tagname)
-    {
-        return tagService.updateNoteTag(tagDto , tagname);
-
-    }
-
-    @PostMapping()
-    public List<Tag> postTag(@RequestBody TagDto tagDto) {
-        return tagService.addTag(tagDto);
-    }
-
-    @PutMapping("{id}")
-    public List<Tag> putTags(@RequestBody TagDto tagDto, @PathVariable Long id) {
-        return tagService.putMethod(tagDto, id);
-    }
-
-    @DeleteMapping("{id}")
-    public List<Tag> deleteTag(@PathVariable Long id) {
-        return tagService.deleteMethod(id);
-    }
-
-    @DeleteMapping("/delete/{name}/{tagname}")
-    public List<Tag> deleteTag(@PathVariable String name , @PathVariable String tagname)
-    {
-        return  tagService.deleteMethod(name , tagname);
-    }
-    @PostMapping("/add/group/tag")
-    public Group addTagToGroup(@RequestParam String username , @RequestParam String groupname , @RequestBody TagDto tagDto)
-    {
-        return tagService.addTagToGroup(username, groupname, tagDto);
-    }
-    @PostMapping("/add/note/tag")
-    public Note addTagToNote(@RequestParam String username , @RequestParam String notename , @RequestBody TagDto tagDto)
-    {
-        return tagService.addTagToNote (username, notename, tagDto);
+    @PutMapping("/update/note/user")
+    public Tag updateTagInNote(@RequestParam String username, @RequestParam String notename, @RequestParam String tagname, @RequestBody TagDto tagDto) {
+        return tagService.updateTagFromNote(username, notename, tagname, tagDto);
     }
 
 
-
-    /*
-    @GetMapping("/{id}")
-    public Optional<Tag> getTag(@PathVariable long id) {
-        return tagRepo.findById(id);
+    @DeleteMapping("/delete/user")
+    public void deleteTag(@RequestParam String username, @RequestParam String tagname) {
+        tagService.deleteTag(username, tagname);
     }
 
-
-
-
-
-
-
-    @GetMapping("/user")
-    public List<Tag> getTagsOfUser(@RequestBody BaseUserDto baseUserDto) {
-        return tagService.findTagByUser(baseUserDto);
+    @DeleteMapping("/delete/group/user")
+    public void deleteTagFromGroup(@RequestParam String username, @RequestParam String groupname, @RequestParam String tagname) {
+        tagService.deleteGroupTag(username, groupname, tagname);
     }
 
- */
+    @DeleteMapping("/delete/note/user")
+    public void deleteTagFromNote(@RequestParam String username, @RequestParam String notename, @RequestParam String tagname) {
+        tagService.deleteGroupTag(username, notename, tagname);
+    }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteTagById(@PathVariable long id) {
+        tagService.deleteById(id);
+    }
 
 }

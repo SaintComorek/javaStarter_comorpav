@@ -44,17 +44,6 @@ public class User {
     @OneToMany
     @Cascade(CascadeType.ALL)
     private List<Note> noteList = new ArrayList<>();
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<Tag> groupTagList = new ArrayList<>();
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<Tag> noteTagList = new ArrayList<>();
-
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<Tag> tagList = new ArrayList<>();
-
 
 
     public void createUser(String name, String lastName, String emailAddress, String username, String password, int age) {
@@ -83,26 +72,11 @@ public class User {
 
     public void addToGroupList(Group group) {
         groupList.add(group);
-        groupTagList.addAll(group.getTags());
-        tagList.addAll(group.getTags());
+
 
     }
     public void addToNoteList(Note note) {
         noteList.add(note);
-        noteTagList.addAll(note.getTags());
-        tagList.addAll(note.getTags());
-    }
-    public void addtoTagList(Tag tag)
-    {
-        tagList.add(tag);
-    }
-    public void addToGroupTagList(Tag tag)
-    {
-        groupTagList.add(tag);
-    }
-    public void addToNoteTagList(Tag tag)
-    {
-        noteTagList.add(tag);
     }
 
 }

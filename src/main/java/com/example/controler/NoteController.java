@@ -3,9 +3,9 @@ package com.example.controler;
 import com.example.dto.NoteDto;
 import com.example.model.Group;
 import com.example.model.Note;
-import com.example.model.User;
 import com.example.service.NoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -15,75 +15,66 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
 
-    private final NoteService noteService;
+    @Autowired
+    NoteService noteService;
 
     @GetMapping()
     public List<Note> getAllNotes() {
         return noteService.getAllNotes();
     }
-
-    @GetMapping("/user/allnotes")
-    public List<Note> getAllUserNotes(@RequestParam String name, @RequestParam String lastname) {
-        return noteService.getAllUserNotes(name, lastname);
-    }
-
-    @PutMapping("/user/update")
-    public User updateNote(@RequestBody NoteDto noteDto, @RequestParam String name, @RequestParam String lastname, @RequestParam String notename) {
-        return noteService.updateNote(noteDto, name, lastname, notename);
-    }
-
-
-    @PostMapping("/user/groups")
-    public List<Group> addNoteToMultipleUserGroups(@RequestBody NoteDto noteDto, @RequestParam String name, @RequestParam String lastname, @RequestParam String grouptag) {
-
-        return noteService.addNoteToGroupsByTag(noteDto, name, lastname, grouptag);
-    }
-
-    @PostMapping("/add/user/")
-    public List<Group> addNoteToUser(@RequestBody NoteDto noteDto, @RequestParam String name, @RequestParam String lastname, @RequestParam String groupname) {
-        return noteService.addNoteToUserGroup(noteDto, name, lastname, groupname);
-    }
-
-    @PostMapping("/add/note/group/user")
-    public List<Group> addNoteToGroup(NoteDto noteDto, @RequestParam String name, @RequestParam String lastname, @RequestParam String groupname) {
-        return noteService.addNoteToUserGroup(noteDto, name, lastname, groupname);
-    }
-    // Path variable using
-
-    @GetMapping("/find/notes/name")
-    public List<Note> gatNoteByUserName(@RequestParam String name) {
-
-        return noteService.findNoteByUserName(name);
-    }
-
-    @GetMapping("/find/notes/lastname")
-    public List<Note> gatNoteByUserLastName(@RequestParam String lastName) {
-
-        return noteService.findNoteByLastName(lastName);
-    }
-
-    @DeleteMapping("/delete/user")
-    public void deleteNoteFromNotes(@RequestParam String name  ,  @RequestParam String lastname ,  @RequestParam String notename)
-    {
-        noteService.deleteNoteFromNotes(name , lastname , notename);
-
-    }
-
-    @DeleteMapping("/delete/user/group")
-    public void deleteNoteFromGroup(@RequestParam String name  ,  @RequestParam String lastname , @RequestParam String groupname  ,  @RequestParam String notename)
-    {
-        noteService.deleteNoteFromGroup(name , lastname , groupname , notename);
-
-    }
-
     @GetMapping("/get/id")
     public Note getNote(@RequestParam long id) {
         return noteService.findNoteId(id);
     }
 
-    @PutMapping("/upt/id")
-    public Note putNote(@RequestBody NoteDto noteDto, @RequestParam long id) {
-        return noteService.updateById(noteDto, id);
+    @GetMapping("/user")
+    public List <Note> userNotes(@RequestParam String username) {
+        return noteService.findNotes(username);
+    }
+
+    @GetMapping("/group/user")
+    public List <Note> userGroupNotes(@RequestParam String username,@RequestParam String groupname) {
+        return noteService.findGroupNotes(username,groupname);
+    }
+
+    @PostMapping("/create/user")
+    public List<Note> createNote(@RequestBody NoteDto noteDto, @RequestParam String username)
+    {
+        return noteService.createNote(noteDto,username);
+    }
+    @PostMapping("/create/group/user")
+    public List<Note> createNoteInGroup(@RequestBody NoteDto noteDto, @RequestParam String username, @RequestParam String groupname)
+    {
+        return noteService.createNote(username,groupname,noteDto);
+    }
+
+
+    @PutMapping("/update/user")
+    public Note updateNote(@RequestBody NoteDto noteDto, @RequestParam String username, @RequestParam String notename) {
+        return noteService.updateNote(noteDto,username, notename);
+    }
+    @PutMapping("/update/group/user")
+    public Group updateNoteInGroup(@RequestBody NoteDto noteDto, @RequestParam String username, @RequestParam String groupname, @RequestParam String notename) {
+        return noteService.updateNote(noteDto,username,groupname, notename);
+    }
+    @PutMapping("/update/{id}")
+    public Note updateNoteById(@RequestBody NoteDto noteDto, @PathVariable long id) {
+        return noteService.updateById(noteDto,id);
+    }
+    @DeleteMapping("/delete/user")
+    public void deleteNote(@RequestParam String username, @RequestParam String notename) {
+        noteService.deleteNote(username,notename);
+
+    }
+
+    @DeleteMapping("/delete/group/user")
+    public void deleteNoteFromGroup(@RequestParam String username, @RequestParam String groupname, @RequestParam String notename) {
+        noteService.deleteNoteFromGroup(username, groupname, notename);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteNotebyId(@PathVariable long id) {
+        noteService.deleteNoteById(id);
     }
 
     @DeleteMapping("/delete/id")

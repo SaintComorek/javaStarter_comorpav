@@ -26,14 +26,13 @@ public class Note {
 
     @OneToMany
     @Cascade(CascadeType.ALL)
-    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags ;
 
     @ManyToOne
     @Cascade(CascadeType.ALL)
     private BaseUserModel baseUserModel;;
 
-    public void addToTagList(Tag tag)
-    {
+    public void addTag(Tag tag){
         tags.add(tag);
     }
 
